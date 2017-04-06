@@ -24,13 +24,17 @@ public class Main {
         Node a = new Node(new Vector<>(), 0, new Vector<>(), "a", "404", false, false);
         a.addNeighbour(b);
         a.addNeighbour(c);
-        Graph gr = new Graph(a);
+        Problem p = (new Problem());
+        p.setInitialState(a);
+        Graph gr = new Graph(p);
         try {
-//            gr.BFSTraverse();
-//            gr.setTraversed(false);
-//            gr.DFSTraverse(-1,false);
+            gr.BFSTraverse();
             gr.setTraversed(false);
-            gr.DFSTraverse(3,true);
+            gr.DFSTraverse(-1,false);
+            gr.setTraversed(false);
+            gr.DFSTraverse(2,false);
+            gr.setTraversed(false);
+            gr.DFSTraverse(2,true);
         } catch (GSException | InterruptedException e1) {
             e1.printStackTrace();
         }

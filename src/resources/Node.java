@@ -9,7 +9,7 @@ public class Node {
     private Node parent;
     private Vector<Node> neighbors;
     private int depth;
-    private List<Node> path;
+//    private List<Node> path;
     private String name;
     private String state;
     private boolean traversed;
@@ -18,7 +18,7 @@ public class Node {
     public Node(Vector<Node> neighbors, int depth, List<Node> path, String name, String state, boolean traversed, boolean explored) {
         this.neighbors = neighbors;
         this.depth = depth;
-        this.path = path;
+//        this.path = path;
         this.name = name;
         this.state = state;
         this.traversed = traversed;
@@ -81,13 +81,13 @@ public class Node {
         this.depth = depth;
     }
 
-    public List<Node> getPath() {
-        return path;
-    }
+//    public List<Node> getPath() {
+//        return path;
+//    }
 
-    public void setPath(List<Node> path) {
-        this.path = path;
-    }
+//    public void setPath(List<Node> path) {
+//        this.path = path;
+//    }
 
     public boolean addNeighbour(Node dest){
         return neighbors.add(dest);

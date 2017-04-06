@@ -1,5 +1,6 @@
 package searchers;
 
+import main.Problem;
 import resources.Node;
 import resources.GSException;
 
@@ -8,21 +9,27 @@ public abstract class Searcher {
     /**
      * The node which the search is being started on it
      */
-    protected Node root;
+    protected Node startNode;
 
-    public Searcher(Node root){
-        this.root = root;
+    /**
+     * The problem to be searched and solved
+     */
+    protected Problem problem;
+
+    public Searcher(Problem problem){
+        this.problem = problem;
+        this.startNode = problem.getInitialState();
     }
 
-    public Node getRoot() {
-        return root;
+    public Node getStartNode() {
+        return startNode;
     }
 
-    public void setRoot(Node root) {
-        this.root = root;
+    public void setStartNode(Node startNode) {
+        this.startNode = startNode;
     }
 
-    public abstract boolean search() throws GSException, InterruptedException;
+    public abstract Node search() throws GSException, InterruptedException;
 
-    protected abstract void traverseNode(Node n, Node parent);
+    protected abstract boolean verifyNode(Node n, Node parent);
 }

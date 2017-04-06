@@ -1,38 +1,47 @@
 package searchers;
 
+import main.Problem;
 import resources.Node;
 import resources.GSException;
 import sun.misc.Queue;
 
 public class BFSearcher extends Searcher {
 
-    public BFSearcher(Node root) {
-        super(root);
+    private Queue<Node> q;
+
+    public BFSearcher(Problem p) {
+        super(p);
+        q = new Queue<>();
     }
 
     @Override
-    public boolean search() throws GSException, InterruptedException {
-        if (root == null)
+    public Node search() throws GSException, InterruptedException {
+        if (startNode == null)
             throw new GSException("Initial State is null! Please set the initial state first!");
-        Queue<Node> q = new Queue<>();
-        traverseNode(root, null);
-        q.enqueue(root);
+        if (q == null)
+            this.q = new Queue<>();
+        if (verifyNode(startNode, null))
+            return startNode;
+        q.enqueue(startNode);
         while (!q.isEmpty()){
             Node curr = q.dequeue();
             for (Node n : curr.getNeighbors()) {
                 if (!n.isTraversed()){
-                    traverseNode(n, curr);
+                    if (verifyNode(n, curr))
+                        return n;
                     q.enqueue(n);
                 }
             }
         }
-        return true;
+        return null;
     }
 
     @Override
-    protected void traverseNode(Node n, Node parent) {
+    protected boolean verifyNode(Node n, Node parent) {
         n.setTraversed(true);
-        System.out.println("BFS TRAVERSED: " + n.getName());
+        n.setExplored(true);
         n.setParent(parent);
+        System.out.println("BFS TRAVERSED: " + n.getName());
+        return problem.goalTest(n);
     }
 }

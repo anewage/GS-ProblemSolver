@@ -1,5 +1,6 @@
 package searchers;
 
+import main.Problem;
 import resources.Graph;
 import resources.Node;
 import resources.GSException;
@@ -26,10 +27,10 @@ public class DFSearcher extends Searcher {
 
     /**
      * Constructor method. Initializes the searcher to be a normal DFSearcher.
-     * @param root the initial state from which the search begins.
+     * @param p the problem in which we must search for the answer
      */
-    public DFSearcher(Node root) {
-        super(root);
+    public DFSearcher(Problem p) {
+        super(p);
         iterating = false;
         depthLimit = -1;
         iteratingMaxDepth = -1;
@@ -60,28 +61,30 @@ public class DFSearcher extends Searcher {
     }
 
     @Override
-    public boolean search() throws GSException, InterruptedException {
+    public Node search() throws GSException, InterruptedException {
         if (iterating)
             for (depthLimit = 0; depthLimit <= iteratingMaxDepth ; depthLimit++){
-                recursiveSearch(root, null);
-                Graph.setTraversed(root, false);
+                recursiveSearch(startNode, null);
+                Graph.setTraversed(startNode, false);
             }
         else
-            recursiveSearch(root, null);
-        return false;
+            recursiveSearch(startNode, null);
+        return null;
     }
 
     @Override
-    protected void traverseNode(Node n, Node parent) {
+    protected boolean verifyNode(Node n, Node parent) {
         n.setTraversed(true);
+        n.setExplored(true);
         System.out.println("DFS TRAVERSED WITH D-Limit of " + depthLimit + (iterating ? " and being iterative" : "" )+ ": " + n.getName());
         n.setParent(parent);
+        return problem.goalTest(n);
     }
 
     private void recursiveSearch(Node root, Node parent){
         if (depthLimit != -1 && root.getDepth() > depthLimit)
             return;
-        traverseNode(root, parent);
+        verifyNode(root, parent);
         for (Node n : root.getNeighbors() ){
             if (!n.isTraversed())
                 recursiveSearch(n, root);

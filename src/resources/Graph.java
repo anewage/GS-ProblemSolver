@@ -1,9 +1,12 @@
 package resources;
 
+import main.Problem;
 import searchers.BFSearcher;
 import searchers.DFSearcher;
 
 public class Graph {
+
+    private Problem problem;
 
     /**
      * The start node (initial node)
@@ -13,10 +16,15 @@ public class Graph {
     private BFSearcher bfs;
     private DFSearcher dfs;
 
-    public Graph(Node parent) {
-        this.parent = parent;
-        bfs = new BFSearcher(parent);
-        dfs = new DFSearcher(parent);
+    public Graph(Problem p) {
+        this.problem = p;
+        this.parent = p.getInitialState();
+        bfs = new BFSearcher(p);
+        dfs = new DFSearcher(p);
+    }
+
+    public Graph(Node p) {
+        this.parent = p;
     }
 
     public static void setTraversed(Node start, boolean flag){
@@ -35,19 +43,19 @@ public class Graph {
         return maxDepth(parent);
     }
 
-    public boolean BFSTraverse() throws InterruptedException, GSException {
+    public Node BFSTraverse() throws InterruptedException, GSException {
         if (bfs == null)
-            bfs = new BFSearcher(parent);
-        if (bfs.getRoot() == null)
-            bfs.setRoot(parent);
+            bfs = new BFSearcher(problem);
+        if (bfs.getStartNode() == null)
+            bfs.setStartNode(parent);
         return bfs.search();
     }
 
-    public boolean DFSTraverse(int depthLimit, boolean iterative) throws InterruptedException, GSException {
+    public Node DFSTraverse(int depthLimit, boolean iterative) throws InterruptedException, GSException {
         if (dfs == null)
-            dfs = new DFSearcher(parent);
-        if (dfs.getRoot() == null)
-            dfs.setRoot(parent);
+            dfs = new DFSearcher(problem);
+        if (dfs.getStartNode() == null)
+            dfs.setStartNode(parent);
         dfs.setDepthLimit(depthLimit);
         dfs.setIterating(iterative);
         if (iterative){
