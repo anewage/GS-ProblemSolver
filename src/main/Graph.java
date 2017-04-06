@@ -32,6 +32,10 @@ public class Graph {
         setNodeTraversed(parent, flag);
     }
 
+    public int getDepth(){
+        return maxDepth(parent);
+    }
+
     public boolean BFSTraverse() throws InterruptedException, GSException {
         if (bfs == null)
             bfs = new BFSearcher(parent);
@@ -48,7 +52,7 @@ public class Graph {
         dfs.setDepthLimit(depthLimit);
         dfs.setIterating(iterative);
         if (iterative){
-            dfs.setIteratingMaxDepth(3);
+            dfs.setIteratingMaxDepth(getDepth());
         }
         return dfs.search();
     }
@@ -58,6 +62,18 @@ public class Graph {
             setNodeTraversed(child, flag);
         }
         n.setTraversed(flag);
+    }
+
+    private int maxDepth(Node n){
+        if (n.getNeighbors().isEmpty())
+            return n.getDepth();
+        int d = 0;
+        for (Node child : n.getNeighbors()) {
+            int tmp = maxDepth(child);
+            if (tmp > d)
+                d = tmp;
+        }
+        return d;
     }
 
 }
