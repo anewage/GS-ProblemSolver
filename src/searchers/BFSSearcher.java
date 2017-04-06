@@ -32,7 +32,7 @@ public class BFSSearcher extends Searcher {
     @Override
     protected void traverseNode(Node n, Node parent) {
         n.setTraversed(true);
-        System.out.println("TRAVERSED: " + n.getName());
+        System.out.println("BFS TRAVERSED: " + n.getName());
         n.setParent(parent);
     }
 }
