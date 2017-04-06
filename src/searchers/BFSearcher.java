@@ -4,9 +4,9 @@ import main.Node;
 import resources.GSException;
 import sun.misc.Queue;
 
-public class BFSSearcher extends Searcher {
+public class BFSearcher extends Searcher {
 
-    public BFSSearcher(Node root) {
+    public BFSearcher(Node root) {
         super(root);
     }
 
