@@ -1,14 +1,12 @@
-package ir.amirhmaleki;
+package main;
 
 
 import java.util.List;
 import java.util.Vector;
 
-/**
- * Created by Amir on 4/4/2017 in package ir.amirhmaleki of project AI-S17-P1.
- */
 public class Node {
 
+    private Node parent;
     private Vector<Node> neighbors;
     private int depth;
     private List<Node> path;
@@ -25,6 +23,14 @@ public class Node {
         this.state = state;
         this.traversed = traversed;
         this.explored = explored;
+    }
+
+    public Node getParent() {
+        return parent;
+    }
+
+    public void setParent(Node parent) {
+        this.parent = parent;
     }
 
     public String getName() {
@@ -85,5 +91,10 @@ public class Node {
 
     public boolean addNeighbour(Node dest){
         return neighbors.add(dest);
+    }
+
+    @Override
+    public String toString() {
+        return getName() + " " + getState() + " " + String.valueOf(isTraversed());
     }
 }
