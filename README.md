@@ -1,0 +1,3 @@
+# GS-ProblemSolver
+A Java Problem Solving Framework Based on Graph and Tree Searching - Project of AI course at AUT
+ To be completed...
