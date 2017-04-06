@@ -1,6 +1,5 @@
-package main;
+package resources;
 
-import resources.GSException;
 import searchers.BFSearcher;
 import searchers.DFSearcher;
 

@@ -1,6 +1,6 @@
 package searchers;
 
-import main.Node;
+import resources.Node;
 import resources.GSException;
 
 public abstract class Searcher {

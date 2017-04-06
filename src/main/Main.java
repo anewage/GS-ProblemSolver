@@ -1,6 +1,8 @@
 package main;
 
 import resources.GSException;
+import resources.Graph;
+import resources.Node;
 
 import java.util.Vector;
 

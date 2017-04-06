@@ -1,7 +1,7 @@
 package searchers;
 
-import main.Graph;
-import main.Node;
+import resources.Graph;
+import resources.Node;
 import resources.GSException;
 
 public class DFSearcher extends Searcher {
