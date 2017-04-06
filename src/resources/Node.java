@@ -14,6 +14,7 @@ public class Node {
     private String state;
     private boolean traversed;
     private boolean explored;
+    private int pathCost;
 
     public Node(Vector<Node> neighbors, int depth, List<Node> path, String name, String state, boolean traversed, boolean explored) {
         this.neighbors = neighbors;
@@ -63,6 +64,14 @@ public class Node {
 
     public void setExplored(boolean explored) {
         this.explored = explored;
+    }
+
+    public int getPathCost() {
+        return pathCost;
+    }
+
+    public void setPathCost(int pathCost) {
+        this.pathCost = pathCost;
     }
 
     public Vector<Node> getNeighbors() {

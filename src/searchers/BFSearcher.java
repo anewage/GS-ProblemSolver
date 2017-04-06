@@ -1,6 +1,6 @@
 package searchers;
 
-import main.Problem;
+import resources.Problem;
 import resources.Node;
 import resources.GSException;
 import sun.misc.Queue;

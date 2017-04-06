@@ -1,6 +1,5 @@
 package resources;
 
-import main.Problem;
 import searchers.BFSearcher;
 import searchers.DFSearcher;
 

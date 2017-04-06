@@ -1,8 +1,6 @@
 package main;
 
-import resources.GSException;
-import resources.Graph;
-import resources.Node;
+import resources.*;
 
 import java.util.Vector;
 
@@ -24,7 +22,27 @@ public class Main {
         Node a = new Node(new Vector<>(), 0, new Vector<>(), "a", "404", false, false);
         a.addNeighbour(b);
         a.addNeighbour(c);
-        Problem p = (new Problem());
+        Problem p = (new Problem(a) {
+            @Override
+            public Node result(Node n, Action a) {
+                return null;
+            }
+
+            @Override
+            public boolean goalTest(Node n) {
+                return false;
+            }
+
+            @Override
+            public int stepCost(Node n) {
+                return 1;
+            }
+
+            @Override
+            public int pathCost(Node n) {
+                return 1;
+            }
+        });
         p.setInitialState(a);
         Graph gr = new Graph(p);
         try {

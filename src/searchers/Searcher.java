@@ -1,20 +1,20 @@
 package searchers;
 
-import main.Problem;
+import resources.Problem;
 import resources.Node;
 import resources.GSException;
 
 public abstract class Searcher {
 
     /**
-     * The node which the search is being started on it
-     */
-    protected Node startNode;
-
-    /**
      * The problem to be searched and solved
      */
     protected Problem problem;
+
+    /**
+     * The node which the search is being started on it
+     */
+    protected Node startNode;
 
     public Searcher(Problem problem){
         this.problem = problem;

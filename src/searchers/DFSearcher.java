@@ -1,6 +1,6 @@
 package searchers;
 
-import main.Problem;
+import resources.Problem;
 import resources.Graph;
 import resources.Node;
 import resources.GSException;
