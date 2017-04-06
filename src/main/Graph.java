@@ -20,7 +20,7 @@ public class Graph {
     public boolean BFSTravese() throws InterruptedException, GSException {
         if (bfs.getRoot() != null)
             bfs.setRoot(parent);
-        return bfs.traverse();
+        return bfs.search();
     }
 
 }

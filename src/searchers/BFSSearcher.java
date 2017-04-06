@@ -4,23 +4,14 @@ import main.Node;
 import resources.GSException;
 import sun.misc.Queue;
 
-public class BFSSearcher {
+public class BFSSearcher extends Searcher {
 
-    private Node root;
-
-    public BFSSearcher(Node root){
-        this.root = root;
+    public BFSSearcher(Node root) {
+        super(root);
     }
 
-    public Node getRoot(){
-        return root;
-    }
-
-    public void setRoot(Node root) {
-        this.root = root;
-    }
-
-    public boolean traverse() throws GSException, InterruptedException {
+    @Override
+    public boolean search() throws GSException, InterruptedException {
         if (root == null)
             throw new GSException("Initial State is null! Please set the initial state first!");
         Queue<Node> q = new Queue<>();
@@ -38,7 +29,8 @@ public class BFSSearcher {
         return true;
     }
 
-    private void traverseNode(Node n, Node parent) {
+    @Override
+    protected void traverseNode(Node n, Node parent) {
         n.setTraversed(true);
         System.out.println("TRAVERSED: " + n.getName());
         n.setParent(parent);
