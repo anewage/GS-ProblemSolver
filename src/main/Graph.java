@@ -20,6 +20,12 @@ public class Graph {
         dfs = new DFSSearcher(parent);
     }
 
+    public void setTraversed(boolean flag){
+        if (parent == null)
+            return;
+        setNodeTraversed(parent, flag);
+    }
+
     public boolean BFSTraverse() throws InterruptedException, GSException {
         if (bfs == null)
             bfs = new BFSSearcher(parent);
@@ -34,6 +40,13 @@ public class Graph {
         if (dfs.getRoot() == null)
             dfs.setRoot(parent);
         return dfs.search();
+    }
+
+    private void setNodeTraversed(Node n, boolean flag){
+        for (Node child : n.getNeighbors()) {
+            setNodeTraversed(child, flag);
+        }
+        n.setTraversed(flag);
     }
 
 }

@@ -24,6 +24,8 @@ public class Main {
         a.addNeighbour(c);
         Graph gr = new Graph(a);
         try {
+            gr.BFSTraverse();
+            gr.setTraversed(false);
             gr.DFSTraverse();
         } catch (GSException | InterruptedException e1) {
             e1.printStackTrace();
