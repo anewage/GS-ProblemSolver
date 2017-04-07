@@ -35,5 +35,4 @@ document.log
 document.out
 document.synctex.gz
 document.toc
-document.pdf
 !/document.tex
