@@ -29,8 +29,8 @@ public class DFSearcher extends Searcher {
     public DFSearcher(Problem p) {
         super(p);
         iterating = false;
-        depthLimit = -1;
-        iteratingMaxDepth = -1;
+        depthLimit = 0;
+        iteratingMaxDepth = 0;
     }
 
     public int getDepthLimit() {
@@ -60,12 +60,17 @@ public class DFSearcher extends Searcher {
     @Override
     public Node search() throws GSException, InterruptedException {
         if (iterating)
-            for (depthLimit = 0; depthLimit <= iteratingMaxDepth ; depthLimit++){
-                recursiveSearch(startNode, null);
-                Graph.setTraversed(startNode, false);
+            for (depthLimit = 1; depthLimit <= iteratingMaxDepth ; depthLimit++){
+                Node res = recursiveSearch(startNode, null);
+                if (res != null)
+                    return res;
+                problem.resetGraph();
             }
-        else
-            recursiveSearch(startNode, null);
+        else{
+            Node res = recursiveSearch(startNode, null);
+            if (res != null)
+                return res;
+        }
         return null;
     }
 
@@ -73,19 +78,43 @@ public class DFSearcher extends Searcher {
     protected boolean verifyNode(Node n, Node parent) {
         n.setTraversed(true);
         n.setExplored(true);
-        System.out.println("DFS TRAVERSED WITH D-Limit of " + depthLimit + (iterating ? " and being iterative" : "" )+ ": " + n.getName());
-        n.setParent(parent);
+        System.out.println("DFS TRAVERSED " + (depthLimit != 0 ? "WITH D-Limit of " + depthLimit : "" ) + (iterating ? " and being iterative" : "" )+ ": #" + n.getIndex());
+        buildPath(n, parent);
         return problem.goalTest(n);
     }
 
-    private void recursiveSearch(Node root, Node parent){
-        if (depthLimit != -1 && root.getDepth() > depthLimit)
-            return;
-        verifyNode(root, parent);
+    private void buildPath(Node n, Node parent){
+        n.setParent(parent);
+    }
+
+    private Node recursiveSearch(Node root, Node parent){
+        if (root.getIndex() == 4)
+            System.out.println("Hello");
+        buildPath(root, parent);
+        int rootDepth = root.getDepth();
+        if (depthLimit != 0 &&  rootDepth > depthLimit)
+            return null;
+        if (verifyNode(root, parent)){
+            System.out.println("HOORAY! FOUND: #" + root.getIndex() + root.getPath() );
+            return root;
+        }
         for (Action a : problem.actions(root)){
             Node n = problem.result(root, a);
-            if (!n.isTraversed())
-                recursiveSearch(n, root);
+            if (!n.isTraversed()){
+                Node res = recursiveSearch(n, root);
+                if (res != null)
+                    return res;
+            }
         }
+//        root.setExplored(false);
+//        root.setTraversed(false);
+        for (Action a : problem.actions(root)){
+            Node n = problem.result(root, a);
+            if (n.getParent().equals(root)){
+                n.setTraversed(false);
+                n.setExplored(false);
+            }
+        }
+        return null;
     }
 }

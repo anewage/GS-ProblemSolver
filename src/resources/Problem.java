@@ -10,12 +10,14 @@ public abstract class Problem {
 
     private Node goal;
 
-    public Problem(Node initialState){
-        this.initialState = initialState;
+    protected Graph graph;
+
+    public Problem(Graph graph) {
+        this.graph = graph;
     }
 
-    public Node getInitialState() {
-        return initialState;
+    public Problem(Node initialState){
+        this.initialState = initialState;
     }
 
     public void setInitialState(Node initialState) {
@@ -31,10 +33,6 @@ public abstract class Problem {
         return p;
     }
 
-    public abstract Vector<Action> actions(Node n);
-
-    public abstract Node result(Node n, Action a);
-
     public Node getGoal(){
         return goal;
     }
@@ -43,9 +41,19 @@ public abstract class Problem {
         this.goal = goal;
     }
 
+    public void resetGraph(){
+        graph.setTraversed(false);
+    }
+
+    public abstract Vector<Action> actions(Node n);
+
+    public abstract Node result(Node n, Action a);
+
+    public abstract Node getInitialState();
+
     public abstract boolean goalTest(Node n);
 
-    public abstract int stepCost(Node n);
+    public abstract int stepCost(Node n, Action a);
 
     public abstract int pathCost(Node n);
 }

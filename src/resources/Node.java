@@ -8,17 +8,23 @@ public class Node {
 
     private Node parent;
     private Vector<Node> neighbors;
-    private int depth;
-//    private List<Node> path;
+//    private int depth;
+    private Vector<Node> path;
     private String name;
     private String state;
     private boolean traversed;
     private boolean explored;
     private int pathCost;
 
+    private int index;
+
+    public Node(int index) {
+        this.index = index;
+    }
+
     public Node(Vector<Node> neighbors, int depth, List<Node> path, String name, String state, boolean traversed, boolean explored) {
         this.neighbors = neighbors;
-        this.depth = depth;
+//        this.depth = depth;
 //        this.path = path;
         this.name = name;
         this.state = state;
@@ -83,20 +89,23 @@ public class Node {
     }
 
     public int getDepth() {
-        return depth;
+        return getPath().size();
     }
 
-    public void setDepth(int depth) {
-        this.depth = depth;
+//    public void setDepth(int depth) {
+//        this.depth = depth;
+//    }
+
+    public Vector<Node> getPath() {
+        path = new Vector<>();
+        path.add(this);
+        Node parent = this.parent;
+        while (parent != null){
+            path.add(parent);
+            parent = parent.getParent();
+        }
+        return path;
     }
-
-//    public List<Node> getPath() {
-//        return path;
-//    }
-
-//    public void setPath(List<Node> path) {
-//        this.path = path;
-//    }
 
     public boolean addNeighbour(Node dest){
         return neighbors.add(dest);
@@ -104,11 +113,19 @@ public class Node {
 
     @Override
     public String toString() {
-        return getName() + " " + getState() + " " + String.valueOf(isTraversed());
+        return "Node #" + getIndex() + " -> " + getName() + " " + getState() + " " + String.valueOf(isTraversed());
     }
 
     @Override
     public boolean equals(Object obj) {
-        return name.equals(((Node) obj).getName());
+        return index == ((Node) obj).getIndex();
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
     }
 }

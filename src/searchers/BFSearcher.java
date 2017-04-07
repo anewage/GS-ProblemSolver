@@ -6,6 +6,8 @@ import resources.Node;
 import resources.GSException;
 import sun.misc.Queue;
 
+import java.util.Stack;
+
 public class BFSearcher extends Searcher {
 
     private Queue<Node> q;
@@ -29,8 +31,10 @@ public class BFSearcher extends Searcher {
             for (Action a : problem.actions(curr)) {
                 Node n = problem.result(curr, a);
                 if (!n.isTraversed()){
-                    if (verifyNode(n, curr))
+                    if (verifyNode(n, curr)){
+                        System.out.println("HOORAY! FOUND: #" + n.getIndex() + n.getPath() );
                         return n;
+                    }
                     q.enqueue(n);
                 }
             }
