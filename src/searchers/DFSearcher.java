@@ -106,8 +106,8 @@ public class DFSearcher extends Searcher {
                     return res;
             }
         }
-//        root.setExplored(false);
-//        root.setTraversed(false);
+
+        // Reverting everything back to normal!
         for (Action a : problem.actions(root)){
             Node n = problem.result(root, a);
             if (n.getParent().equals(root)){
