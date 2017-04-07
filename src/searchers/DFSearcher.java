@@ -84,7 +84,10 @@ public class DFSearcher extends Searcher {
     }
 
     private void buildPath(Node n, Node parent){
-        n.setParent(parent);
+        int weight = 0;
+        if (parent != null)
+            weight = problem.getPathCost(parent.getIndex(), n.getIndex());
+        n.setParent(parent, weight);
     }
 
     private Node recursiveSearch(Node root, Node parent){

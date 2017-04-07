@@ -1,6 +1,7 @@
 package main;
 
 import resources.*;
+import searchers.AstarSearcher;
 import searchers.BFSearcher;
 import searchers.DFSearcher;
 
@@ -73,7 +74,7 @@ public class Main {
             @Override
             public Node getInitialState() {
                 Node n = graph.getNodes()[0];
-                n.setParent(null);
+                n.setParent(null,0);
                 n.setExplored(false);
                 n.setTraversed(false);
                 n.setName("Arad");
@@ -98,16 +99,45 @@ public class Main {
             public int pathCost(Node n) {
                 return n.getPathCost();
             }
+
+            @Override
+            public int hCost(Node n) {
+                int [] cities = {
+                        710,
+                        634,
+                        576,
+                        677,
+                        408,
+                        636,
+                        720,
+                        669,
+                        561,
+                        507,
+                        330,
+                        447,
+                        388,
+                        324,
+                        267,
+                        283,
+                        387,
+                        0,
+                        66,
+                        133,
+                };
+                return cities[n.getIndex()];
+            }
         };
 
 //        BFSearcher bfs = new BFSearcher(p);
-        DFSearcher dfs = new DFSearcher(p);
-        dfs.setDepthLimit(8);
+//        DFSearcher dfs = new DFSearcher(p);
+//        dfs.setDepthLimit(8);
 //        dfs.setIteratingMaxDepth(3);
 //        dfs.setIterating(true);
+        AstarSearcher aStar = new AstarSearcher(p);
         try {
 //            Node res = bfs.search();
-            Node res = dfs.search();
+//            Node res = dfs.search();
+            Node res = aStar.search();
             if (res == null)
                 System.out.println("NOT FOUND!");
             else

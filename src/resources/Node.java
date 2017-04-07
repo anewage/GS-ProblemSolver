@@ -17,6 +17,11 @@ public class Node {
     private int pathCost;
     private int costFromParent;
 
+    private int fScore;
+    private int hScore;
+    private int gScore;
+
+
     private int index;
 
     public Node(int index) {
@@ -79,7 +84,7 @@ public class Node {
         Node p = this;
         while (p != null){
             cost += p.getCostFromParent();
-            p = parent.getParent();
+            p = p.getParent();
         }
         return cost;
     }
@@ -121,7 +126,7 @@ public class Node {
 
     @Override
     public String toString() {
-        return "Node #" + getIndex() + " -> " + getName() + " " + getState() + " " + String.valueOf(isTraversed());
+        return "Node #" + getIndex() + " -> g:" + gScore + " h:" + hScore + " f:" + fScore + ", " + String.valueOf(isTraversed());
     }
 
     @Override
@@ -143,5 +148,17 @@ public class Node {
 
     public void setCostFromParent(int costFromParent) {
         this.costFromParent = costFromParent;
+    }
+
+    public void setFScore(int fScore) {
+        this.fScore = fScore;
+    }
+
+    public void setGScore(int GScore) {
+        this.gScore = GScore;
+    }
+
+    public void setHScore(int HScore) {
+        this.hScore = HScore;
     }
 }

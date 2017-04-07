@@ -60,4 +60,6 @@ public abstract class Problem {
     public abstract int stepCost(Node n, Action a);
 
     public abstract int pathCost(Node n);
+
+    public abstract int hCost(Node n);
 }

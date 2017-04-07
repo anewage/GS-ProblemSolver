@@ -4,21 +4,22 @@ import resources.Action;
 import resources.GSException;
 import resources.Node;
 import resources.Problem;
-import sun.misc.Queue;
+
+import java.util.Vector;
 
 public class BDSearcher extends Searcher {
 
     private Problem inverseProblem;
     private Node goal;
-    private Queue<Node> fromGoal;
-    private Queue<Node> fromRoot;
+    private Vector<Node> fromGoal;
+    private Vector<Node> fromRoot;
 
     public BDSearcher(Problem problem) throws GSException, CloneNotSupportedException {
         super(problem);
         inverseProblem = problem.inverse();
         goal = inverseProblem.getInitialState();
-        fromGoal = new Queue<>();
-        fromRoot = new Queue<>();
+        fromGoal = new Vector<>();
+        fromRoot = new Vector<>();
     }
 
     @Override
@@ -28,22 +29,25 @@ public class BDSearcher extends Searcher {
         if (goal == null)
             throw new GSException("Goal State is null! Please set the goal state of the problem first!");
         if (fromRoot == null)
-            fromRoot = new Queue<>();
+            fromRoot = new Vector<>();
         if (fromGoal == null)
-            fromGoal = new Queue<>();
+            fromGoal = new Vector<>();
         if (verifyNode(startNode, null))
             return startNode;
         while (!fromRoot.isEmpty() && !fromGoal.isEmpty()){
-            Node currFromRoot = fromRoot.dequeue();
-            Node currFromGoal = fromGoal.dequeue();
+            Node currFromRoot = fromRoot.firstElement();
+            if (fromGoal.contains(currFromRoot))
+                return currFromRoot;
+
+            Node currFromGoal = fromGoal.firstElement();
             for (int i = 0; i < Math.max(problem.actions(currFromRoot).size(), inverseProblem.actions(currFromGoal).size()); i++) {
                 Action actionFromRoot = problem.actions(currFromRoot).elementAt(i);
                 Node childFromRoot = problem.result(currFromRoot, actionFromRoot);
                 //TODO
             }
         }
-        fromRoot.enqueue(startNode);
-        fromGoal.enqueue(goal);
+//        fromRoot.enqueue(startNode);
+//        fromGoal.enqueue(goal);
         return null;
     }
 
