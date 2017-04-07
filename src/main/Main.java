@@ -1,17 +1,16 @@
 package main;
 
-import javafx.util.Pair;
 import resources.*;
 import searchers.AstarSearcher;
 import searchers.BFSearcher;
 import searchers.DFSearcher;
-
 import java.util.Scanner;
 import java.util.Vector;
 
 public class Main {
 
     public static void main(String[] args) {
+        p1();
         p3();
     }
 
@@ -91,11 +90,20 @@ public class Main {
         };
 
         BFSearcher bfs = new BFSearcher(p3);
+        DFSearcher dfs = new DFSearcher(p3);
+        dfs.setIterating(true);
+        dfs.setIteratingMaxDepth(Integer.MAX_VALUE);
         try {
             Node res = bfs.search();
             while (res != null){
                 System.out.println("[ " + ((int [])res.getState())[0] + ", "  + ((int [])res.getState())[1] + " ]");
                 res = res.getParent();
+            }
+
+            Node res2 = dfs.search();
+            while (res2 != null){
+                System.out.println("[ " + ((int [])res2.getState())[0] + ", "  + ((int [])res2.getState())[1] + " ]");
+                res2 = res2.getParent();
             }
         } catch (GSException | InterruptedException e) {
             e.printStackTrace();
