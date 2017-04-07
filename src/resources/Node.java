@@ -15,6 +15,7 @@ public class Node {
     private boolean traversed;
     private boolean explored;
     private int pathCost;
+    private int costFromParent;
 
     private int index;
 
@@ -36,8 +37,9 @@ public class Node {
         return parent;
     }
 
-    public void setParent(Node parent) {
+    public void setParent(Node parent, int stepCost) {
         this.parent = parent;
+        costFromParent = stepCost;
     }
 
     public String getName() {
@@ -73,7 +75,13 @@ public class Node {
     }
 
     public int getPathCost() {
-        return pathCost;
+        int cost = 0;
+        Node p = this;
+        while (p != null){
+            cost += p.getCostFromParent();
+            p = parent.getParent();
+        }
+        return cost;
     }
 
     public void setPathCost(int pathCost) {
@@ -127,5 +135,13 @@ public class Node {
 
     public void setIndex(int index) {
         this.index = index;
+    }
+
+    public int getCostFromParent() {
+        return costFromParent;
+    }
+
+    public void setCostFromParent(int costFromParent) {
+        this.costFromParent = costFromParent;
     }
 }

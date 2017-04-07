@@ -43,7 +43,10 @@ public class UCSearcher extends Searcher {
         n.setTraversed(true);
         n.setExplored(true);
         System.out.println("UC TRAVERSED: " + n.getName());
-        n.setParent(parent);
+        int weight = 0;
+        if (parent != null)
+            weight = problem.getPathCost(parent.getIndex(), n.getIndex());
+        n.setParent(parent, weight);
         return problem.goalTest(n);
     }
 }

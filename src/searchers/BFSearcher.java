@@ -46,7 +46,10 @@ public class BFSearcher extends Searcher {
     protected boolean verifyNode(Node n, Node parent) {
         n.setTraversed(true);
         n.setExplored(true);
-        n.setParent(parent);
+        int weight = 0;
+        if (parent != null)
+            weight = problem.getPathCost(parent.getIndex(), n.getIndex());
+        n.setParent(parent, weight);
         System.out.println("BFS TRAVERSED: " + n.getName());
         return problem.goalTest(n);
     }

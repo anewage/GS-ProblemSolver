@@ -45,6 +45,10 @@ public abstract class Problem {
         graph.setTraversed(false);
     }
 
+    public int getPathCost(int from, int to) {
+        return graph.getAdjMatrix()[from][to];
+    }
+
     public abstract Vector<Action> actions(Node n);
 
     public abstract Node result(Node n, Action a);
