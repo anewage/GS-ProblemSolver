@@ -2,19 +2,19 @@ package resources;
 
 public class Action {
 
-    private String name;
+    private Object name;
 
     private int weight;
 
     private int jIndex;
 
-    public Action(String name, int weight, int jIndex){
+    public Action(Object name, int weight, int jIndex){
         this.name = name;
         this.weight = weight;
         this.jIndex = jIndex;
     }
 
-    public String getName() {
+    public Object getName() {
         return name;
     }
 

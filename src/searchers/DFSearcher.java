@@ -91,8 +91,6 @@ public class DFSearcher extends Searcher {
     }
 
     private Node recursiveSearch(Node root, Node parent){
-        if (root.getIndex() == 4)
-            System.out.println("Hello");
         buildPath(root, parent);
         int rootDepth = root.getDepth();
         if (depthLimit != 0 &&  rootDepth > depthLimit)

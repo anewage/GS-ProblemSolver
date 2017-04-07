@@ -3,14 +3,12 @@ package resources;
 import searchers.BFSearcher;
 import searchers.DFSearcher;
 
-import java.util.Vector;
-
 public class Graph {
 
     /**
      * The start node (initial node)
      */
-    private Node parent;
+    private Node start;
 
     private Node[] nodes;
     
@@ -18,6 +16,10 @@ public class Graph {
     private DFSearcher dfs;
 
     private int [][] adjMatrix;
+
+    public Graph(Node p) {
+        this.start = p;
+    }
 
     public Graph(int nodeCount) {
         adjMatrix = new int[nodeCount][nodeCount];
@@ -54,30 +56,17 @@ public class Graph {
         this.adjMatrix = adjMatrix;
     }
 
-    public Graph(Node p) {
-        this.parent = p;
-    }
-
     public void setTraversed(boolean flag){
         for (Node n : nodes) {
             n.setTraversed(flag);
         }
     }
 
-    public int getDepth(){
-        return maxDepth(parent);
+    public Node getStart() {
+        return start;
     }
 
-    private int maxDepth(Node n){
-        if (n.getNeighbors().isEmpty())
-            return n.getDepth();
-        int d = 0;
-        for (Node child : n.getNeighbors()) {
-            int tmp = maxDepth(child);
-            if (tmp > d)
-                d = tmp;
-        }
-        return d;
+    public void setStart(Node start) {
+        this.start = start;
     }
-
 }

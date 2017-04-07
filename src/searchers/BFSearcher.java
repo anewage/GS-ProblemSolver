@@ -6,8 +6,6 @@ import resources.Node;
 import resources.GSException;
 import sun.misc.Queue;
 
-import java.util.Stack;
-
 public class BFSearcher extends Searcher {
 
     private Queue<Node> q;
@@ -50,7 +48,7 @@ public class BFSearcher extends Searcher {
         if (parent != null)
             weight = problem.getPathCost(parent.getIndex(), n.getIndex());
         n.setParent(parent, weight);
-        System.out.println("BFS TRAVERSED: " + n.getName());
+        System.out.println("BFS TRAVERSED: " + n.getState());
         return problem.goalTest(n);
     }
 }

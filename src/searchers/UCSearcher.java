@@ -42,7 +42,7 @@ public class UCSearcher extends Searcher {
     protected boolean verifyNode(Node n, Node parent) {
         n.setTraversed(true);
         n.setExplored(true);
-        System.out.println("UC TRAVERSED: " + n.getName());
+        System.out.println("UC TRAVERSED: " + n.getState());
         int weight = 0;
         if (parent != null)
             weight = problem.getPathCost(parent.getIndex(), n.getIndex());
