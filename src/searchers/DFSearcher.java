@@ -1,9 +1,6 @@
 package searchers;
 
-import resources.Problem;
-import resources.Graph;
-import resources.Node;
-import resources.GSException;
+import resources.*;
 
 public class DFSearcher extends Searcher {
 
@@ -85,7 +82,8 @@ public class DFSearcher extends Searcher {
         if (depthLimit != -1 && root.getDepth() > depthLimit)
             return;
         verifyNode(root, parent);
-        for (Node n : root.getNeighbors() ){
+        for (Action a : problem.actions(root)){
+            Node n = problem.result(root, a);
             if (!n.isTraversed())
                 recursiveSearch(n, root);
         }

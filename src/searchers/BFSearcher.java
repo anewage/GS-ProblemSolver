@@ -1,5 +1,6 @@
 package searchers;
 
+import resources.Action;
 import resources.Problem;
 import resources.Node;
 import resources.GSException;
@@ -25,7 +26,8 @@ public class BFSearcher extends Searcher {
         q.enqueue(startNode);
         while (!q.isEmpty()){
             Node curr = q.dequeue();
-            for (Node n : curr.getNeighbors()) {
+            for (Action a : problem.actions(curr)) {
+                Node n = problem.result(curr, a);
                 if (!n.isTraversed()){
                     if (verifyNode(n, curr))
                         return n;

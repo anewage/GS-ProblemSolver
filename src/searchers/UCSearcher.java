@@ -1,5 +1,6 @@
 package searchers;
 
+import resources.Action;
 import resources.Problem;
 import resources.GSException;
 import resources.Node;
@@ -24,8 +25,15 @@ public class UCSearcher extends Searcher {
             Node curr = q.remove();
             if (verifyNode(curr, null))
                 return curr;
-            // TODO: complete this.
-            // TODO: get the next state from problem class instead of getting it from the root.
+            for (Action a : problem.actions(curr)) {
+                Node child = problem.result(curr, a);
+                if (!child.isTraversed() || !q.contains(child))
+                    q.add(child);
+                else if (q.contains(child)){
+                    q.remove(child);
+                    q.add(child);
+                }
+            }
         }
         return null;
     }

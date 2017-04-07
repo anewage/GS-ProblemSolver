@@ -106,4 +106,9 @@ public class Node {
     public String toString() {
         return getName() + " " + getState() + " " + String.valueOf(isTraversed());
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return name.equals(((Node) obj).getName());
+    }
 }

@@ -20,9 +20,7 @@ public abstract class Problem {
         this.initialState = initialState;
     }
 
-    public Vector<Node> actions(Node n) {
-        return n.getNeighbors();
-    }
+    public abstract Vector<Action> actions(Node n);
 
     public abstract Node result(Node n, Action a);
 

@@ -24,7 +24,20 @@ public class Main {
         a.addNeighbour(c);
         Problem p = (new Problem(a) {
             @Override
+            public Vector<Action> actions(Node n) {
+                Vector<Action> res = new Vector<>();
+                for (Node child : n.getNeighbors()) {
+                    res.add(new Action(child.getName()));
+                }
+                return res;
+            }
+
+            @Override
             public Node result(Node n, Action a) {
+                for (Node child : n.getNeighbors()) {
+                    if ((child.getName()).equals(a.getName()))
+                        return child;
+                }
                 return null;
             }
 
