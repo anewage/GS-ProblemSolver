@@ -11,7 +11,7 @@ public class Main {
 
     public static void main(String[] args) {
         Graph g1 = new Graph(20);
-        Graph g2 = new Graph(8);
+//        Graph g2 = new Graph(8);
         try {
             g1.addEdge(0,1,75,false);
             g1.addEdge(0,3,118,false);
@@ -37,13 +37,13 @@ public class Main {
             g1.addEdge(17,18,92,false);
             g1.addEdge(18,19,87,false);
 
-            g2.addEdge(0,1,3, false);
-            g2.addEdge(0,2,2, false);
-            g2.addEdge(1,3,10, false);
-            g2.addEdge(1,4,7, false);
-            g2.addEdge(2,5,10, false);
-            g2.addEdge(2,6,5, false);
-            g2.addEdge(4,7,1, false);
+//            g2.addEdge(0,1,3, false);
+//            g2.addEdge(0,2,2, false);
+//            g2.addEdge(1,3,10, false);
+//            g2.addEdge(1,4,7, false);
+//            g2.addEdge(2,5,10, false);
+//            g2.addEdge(2,6,5, false);
+//            g2.addEdge(4,7,1, false);
 
         } catch (GSException e) {
             e.printStackTrace();
@@ -128,20 +128,19 @@ public class Main {
             }
         };
 
-//        BFSearcher bfs = new BFSearcher(p);
-//        DFSearcher dfs = new DFSearcher(p);
-//        dfs.setDepthLimit(8);
-//        dfs.setIteratingMaxDepth(3);
-//        dfs.setIterating(true);
+        BFSearcher bfs = new BFSearcher(p);
+        DFSearcher dfs = new DFSearcher(p);
+        dfs.setDepthLimit(8);
         AstarSearcher aStar = new AstarSearcher(p);
         try {
-//            Node res = bfs.search();
-//            Node res = dfs.search();
-            Node res = aStar.search();
-            if (res == null)
-                System.out.println("NOT FOUND!");
-            else
-                System.out.println(res.getPath());
+            Node res1 = bfs.search();
+            p.resetGraph();
+            Node res2 = dfs.search();
+            p.resetGraph();
+            Node res3 = aStar.search();
+            System.out.println("BFS: " + (res1 != null ? res1.getPath() : ""));
+            System.out.println("Limited DFS with 8 depth: " + (res2 != null ? res2.getPath() : ""));
+            System.out.println("A* search: " + (res3 != null ? res3.getPath() : ""));
         } catch (GSException | InterruptedException e) {
             e.printStackTrace();
         }

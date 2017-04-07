@@ -113,9 +113,10 @@ public class DFSearcher extends Searcher {
         // Reverting everything back to normal!
         for (Action a : problem.actions(root)){
             Node n = problem.result(root, a);
-            if (n.getParent().equals(root)){
-                n.setTraversed(false);
-                n.setExplored(false);
+            if (n.getParent() != null)
+                if (n.getParent().equals(root)){
+                    n.setTraversed(false);
+                    n.setExplored(false);
             }
         }
         return null;
