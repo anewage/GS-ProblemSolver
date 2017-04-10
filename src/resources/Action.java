@@ -2,11 +2,24 @@ package resources;
 
 public class Action {
 
-    private Object action;
+    /**
+     * Object containing data
+     */
+    private Object data;
+
+    /**
+     * Actual cost of the action
+     */
     private double cost;
 
-    public Action(Object action, double cost){
-        this.action = action;
+    /**
+     * Constructor method.
+     *
+     * @param data {@link Action} the action
+     * @param cost The actual cost of this action.
+     */
+    public Action(Object data, double cost){
+        this.data = data;
         this.cost = cost;
     }
 
@@ -19,10 +32,10 @@ public class Action {
     }
 
     public Object getAction() {
-        return action;
+        return data;
     }
 
-    public void setAction(Object action) {
-        this.action = action;
+    public void setAction(Object data) {
+        this.data = data;
     }
 }

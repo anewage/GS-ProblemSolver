@@ -2,11 +2,34 @@ package resources;
 
 public class Node {
 
+    /**
+     * The father from which this node resulted.
+     */
     private Node parent;
+
+    /**
+     * The state in which the agent is while traversing this node.
+     */
     private State state;
+
+    /**
+     * The action which caused stepping to this node.
+     */
     private Action action;
+
+    /**
+     * Actual cost of the path which lead to this node.
+     */
     private double pathCost;
 
+    /**
+     * Constructor method.
+     *
+     * @param parent {@link Node} the father!
+     * @param state {@link State} the actual state.
+     * @param action {@link Action} which was performed on parent and resulted this.
+     * @param pathCost The actual cost which lead to this node.
+     */
     public Node(Node parent, State state, Action action, double pathCost){
         this.action = action;
         this.state = state;
