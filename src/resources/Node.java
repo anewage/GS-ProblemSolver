@@ -1,17 +1,16 @@
 package resources;
 
-
-import java.util.List;
-import java.util.Vector;
-
 public class Node {
 
     private Node parent;
     private State state;
-    private double costFromParent;
+    private Action action;
+    private double pathCost;
 
-    public Node(Node parent, double costFromParent){
-        setParent(parent, costFromParent);
+    public Node(Node parent, State state, Action action, double pathCost){
+        this.action = action;
+        this.state = state;
+        setParent(parent, pathCost);
     }
 
     public Node getParent() {
@@ -24,7 +23,7 @@ public class Node {
 
     public void setParent(Node parent, double stepCost) {
         this.parent = parent;
-        costFromParent = stepCost;
+        pathCost = stepCost;
     }
 
     public State getState() {
@@ -35,17 +34,25 @@ public class Node {
         this.state = state;
     }
 
-    public double getCostFromParent() {
-        return costFromParent;
+    public double getPathCost() {
+        return pathCost;
     }
 
-    public void setCostFromParent(double costFromParent) {
-        this.costFromParent = costFromParent;
+    public void setPathCost(double pathCost) {
+        this.pathCost = pathCost;
+    }
+
+    public Action getAction() {
+        return action;
+    }
+
+    public void setAction(Action action) {
+        this.action = action;
     }
 
     @Override
     public String toString() {
-        return "State:" + state + ", Step cost from parent: " + costFromParent;
+        return "State:" + state + ", Step cost from parent: " + pathCost;
     }
 
     @Override
