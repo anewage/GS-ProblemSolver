@@ -26,14 +26,12 @@ public abstract class Searcher {
     private Vector<Node> explored;
 
     /**
-     * Constructor method. the frontier must be passed along
+     * Constructor method. the frontier must be set at the end of constructing this object.
      *
      * @param problem {@link Problem} to be searched.
-     * @param frontier {@link PriorityQueue} in which the nodes are being kept.
      */
-    public Searcher(Problem problem, PriorityQueue<Node> frontier){
+    public Searcher(Problem problem){
         this.problem = problem;
-        this.frontier = frontier;
     }
 
     /**
@@ -69,6 +67,16 @@ public abstract class Searcher {
 
         }
         return null;
+    }
+
+    /**
+     * Setter for the frontier attribute.
+     * This is the method to call when extending and implementing a new searcher.
+     *
+     * @param frontier {@link PriorityQueue}
+     */
+    protected void setFrontier(PriorityQueue<Node> frontier){
+        this.frontier = frontier;
     }
 
     /**
