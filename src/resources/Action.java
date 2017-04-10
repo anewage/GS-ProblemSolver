@@ -2,39 +2,27 @@ package resources;
 
 public class Action {
 
-    private Object name;
+    private Object action;
+    private double cost;
 
-    private int weight;
-
-    private int jIndex;
-
-    public Action(Object name, int weight, int jIndex){
-        this.name = name;
-        this.weight = weight;
-        this.jIndex = jIndex;
+    public Action(Object action, double cost){
+        this.action = action;
+        this.cost = cost;
     }
 
-    public Object getName() {
-        return name;
+    public double getCost() {
+        return cost;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setCost(double cost) {
+        this.cost = cost;
     }
 
-    public int getWeight() {
-        return weight;
+    public Object getAction() {
+        return action;
     }
 
-    public void setWeight(int weight) {
-        this.weight = weight;
-    }
-
-    public int getjIndex() {
-        return jIndex;
-    }
-
-    public void setjIndex(int jIndex) {
-        this.jIndex = jIndex;
+    public void setAction(Object action) {
+        this.action = action;
     }
 }
