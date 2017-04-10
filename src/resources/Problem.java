@@ -44,4 +44,11 @@ public abstract class Problem {
      * @return double cost of the action.
      */
     public abstract double actionCost(State s, Action a);
+
+    /**
+     * Returns the path in leaded to node n.
+     * @param n Node the leaf node.
+     * @return double path from root to leaf node n.
+     */
+    public abstract double pathCost(Node n);
 }
