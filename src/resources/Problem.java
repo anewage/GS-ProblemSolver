@@ -1,63 +1,47 @@
 package resources;
 
-import resources.Node;
-
 import java.util.Vector;
 
 public abstract class Problem {
 
-    private Node initialState;
+    /**
+     * Getting the problem's initial state in which we start the search.
+     *
+     * @return State the initial state.
+     */
+    public abstract State initialState();
 
-    private Node goal;
+    /**
+     * The actions list which can be performed while the agent is in state s.
+     *
+     * @param s State to review.
+     * @return Vector set of actions available in state s.
+     */
+    public abstract Vector<Action> actions(State s);
 
-    protected Graph graph;
+    /**
+     * Returns the result node of an action performed on agent when it was in state s.
+     *
+     * @param s State the state in which the agent is.
+     * @param a Action the action to perform.
+     * @return State with parent n.
+     */
+    public abstract State result(State s, Action a);
 
-    public Problem(Graph graph) {
-        this.graph = graph;
-    }
+    /**
+     * Determine whether the given state is the goal of the problem or not.
+     *
+     * @param n State to review.
+     * @return boolean the answer.
+     */
+    public abstract boolean goalTest(State n);
 
-    public Problem(Node initialState){
-        this.initialState = initialState;
-    }
-
-    public void setInitialState(Node initialState) {
-        this.initialState = initialState;
-    }
-
-    public Problem inverse() throws CloneNotSupportedException, GSException {
-        if (goal == null)
-            throw new GSException("GOAL for this problem is undefined! Please first define the problem.");
-        Problem p = (Problem) this.clone();
-        p.setInitialState(this.getGoal());
-        p.setGoal(this.getInitialState());
-        return p;
-    }
-
-    public Node getGoal(){
-        return goal;
-    }
-
-    public void setGoal(Node goal) {
-        this.goal = goal;
-    }
-
-    public void resetGraph(){
-        graph.setTraversed(false);
-    }
-
-    public abstract int getPathCost(int from, int to);
-
-    public abstract Vector<Action> actions(Node n);
-
-    public abstract Node result(Node n, Action a);
-
-    public abstract Node getInitialState();
-
-    public abstract boolean goalTest(Node n);
-
-    public abstract int stepCost(Node n, Action a);
-
-    public abstract int pathCost(Node n);
-
-    public abstract int hCost(Node n);
+    /**
+     * Returns the cost of action a in state s.
+     *
+     * @param s State in which the action will be performed.
+     * @param a Action to be performed
+     * @return double cost of the action.
+     */
+    public abstract double actionCost(State s, Action a);
 }
