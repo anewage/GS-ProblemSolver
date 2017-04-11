@@ -23,6 +23,7 @@ public class Main {
             @Override
             public Vector<Action> actions(State s) {
                 Vector<Action> res = new Vector<Action>();
+                // TODO: worst implementation ever!
                 switch (((String)s.getStatus()).toLowerCase()){
                     case "arad" :
                         res.add(new Action("Zerind",75.0));
@@ -276,15 +277,15 @@ public class Main {
         try {
             Node res1 = bfs.search();
             System.out.println("BFS:");
-            System.out.println((res1 != null ? Problem.solution(res1)  : "") + bfs.toString() );
+            System.out.println((res1 != null ? Problem.solution(res1)  : "NOT FOUND ") + bfs.toString() );
 
             Node res2 = dfs.search();
             System.out.println("DFS:");
-            System.out.println((res2 != null ? Problem.solution(res2)  : "") + dfs.toString() );
+            System.out.println((res2 != null ? Problem.solution(res2)  : "NOT FOUND ") + dfs.toString() );
 
             Node res3 = aStar.search();
             System.out.println("A*:");
-            System.out.println((res3 != null ? Problem.solution(res3)  : "") + aStar.toString() );
+            System.out.println((res3 != null ? Problem.solution(res3)  : "NOT FOUND ") + aStar.toString() );
         } catch (GSException | InterruptedException e) {
             e.printStackTrace();
         }
