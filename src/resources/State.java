@@ -29,4 +29,9 @@ public class State {
         State s = (State) obj;
         return s.getStatus().equals(this.status);
     }
+
+    @Override
+    public String toString() {
+        return status.toString();
+    }
 }

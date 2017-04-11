@@ -1,8 +1,29 @@
 package resources;
 
+import java.util.Collections;
 import java.util.Vector;
 
 public abstract class Problem {
+
+    /**
+     * Solution which lead to the node result. Containing the middle states.
+     *
+     * @param result {@link Node} the leaf node which is the goal.
+     * @return {@link Vector<State>} containing the states traversed from root to the goal.
+     */
+    public static Vector<State> solution(Node result){
+        if (result == null)
+            return new Vector<>();
+        Vector<State> res = new Vector<>();
+        res.add(result.getState());
+        Node p = result.getParent();
+        while (p != null) {
+            res.add(p.getState());
+            p = p.getParent();
+        }
+        Collections.reverse(res);
+        return res;
+    }
 
     /**
      * Getting the problem's initial state in which we start the search.

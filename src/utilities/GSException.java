@@ -1,4 +1,4 @@
-package resources;
+package utilities;
 
 public class GSException extends Exception {
 

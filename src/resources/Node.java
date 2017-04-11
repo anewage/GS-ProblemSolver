@@ -73,6 +73,18 @@ public class Node {
         this.action = action;
     }
 
+    public int getDepth(){
+        int depth = 0;
+        if (parent == null)
+            return depth;
+        Node p = parent;
+        while(p != null){
+            depth++;
+            p = p.getParent();
+        }
+        return depth;
+    }
+
     @Override
     public String toString() {
         return "State:" + state + ", Step cost from parent: " + pathCost;
@@ -81,6 +93,6 @@ public class Node {
     @Override
     public boolean equals(Object obj) {
         Node dst = (Node) obj;
-        return dst.getState().equals(this.state) && dst.getParent().equals(this.parent);
+        return dst.getState().equals(this.state);
     }
 }

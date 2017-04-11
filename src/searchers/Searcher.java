@@ -3,7 +3,7 @@ package searchers;
 import resources.Action;
 import resources.Problem;
 import resources.Node;
-import resources.GSException;
+import utilities.GSException;
 
 import java.util.PriorityQueue;
 import java.util.Vector;
@@ -13,17 +13,17 @@ public abstract class Searcher {
     /**
      * The problem to be searched and solved
      */
-    private  Problem problem;
+    protected  Problem problem;
 
     /**
      * The main queue from which the nodes will be checked.
      */
-    private PriorityQueue<Node> frontier;
+    protected Object frontier;
 
     /**
      * Explored set used on graphs.
      */
-    private Vector<Node> explored;
+    protected Vector<Node> explored;
 
     /**
      * Constructor method. the frontier must be set at the end of constructing this object.
@@ -40,56 +40,7 @@ public abstract class Searcher {
      * @return Null if no solution found | {@link Node} containing a solution.
      * @throws GSException if the frontier is not initialized.
      */
-    public Node search() throws GSException{
-        // Initializations
-        initializeFrontier();
-        explored = new Vector<>();
-
-        // Looping
-        while (!frontier.isEmpty()){
-            Node leaf = frontier.remove();
-
-            // Goal test
-            if (problem.goalTest(leaf.getState()))
-                return leaf;
-
-            // Leaf is not a goal. Then it must be expanded. Making sure not to visit this node again!
-            explored.add(leaf);
-
-            // Expanding the leaf node
-            Vector<Action> actions = problem.actions(leaf.getState());
-            for (Action a : actions) {
-                Node child = childNode(leaf, a);
-                if (!frontier.contains(child) || !explored.contains(leaf))
-                    frontier.add(child);
-
-            }
-
-        }
-        return null;
-    }
-
-    /**
-     * Setter for the frontier attribute.
-     * This is the method to call when extending and implementing a new searcher.
-     *
-     * @param frontier {@link PriorityQueue}
-     */
-    protected void setFrontier(PriorityQueue<Node> frontier){
-        this.frontier = frontier;
-    }
-
-    /**
-     * Add the root node containing the initial state of the problem to the frontier.
-     *
-     * @throws GSException if the frontier is set to null.
-     */
-    private void initializeFrontier() throws GSException {
-        if (this.frontier == null)
-            throw new GSException("Frontier for the searcher method is null!");
-        Node root = new Node(null, problem.initialState(), null,0);
-        frontier.add(root);
-    }
+    public abstract Node search() throws GSException, InterruptedException;
 
     /**
      * Building the child node and the path from parent to it.
@@ -98,8 +49,12 @@ public abstract class Searcher {
      * @param a {@link Action} the action which lead a step from father to this node.
      * @return {@link Node} the child!
      */
-    private Node childNode(Node parent, Action a){
+    protected Node childNode(Node parent, Action a){
         return new Node(parent, problem.result(parent.getState(), a), a,
                 parent.getPathCost() + problem.actionCost(parent.getState(), a));
+    }
+
+    protected Node rootNode(){
+        return new Node(null, problem.initialState(), null,0);
     }
 }

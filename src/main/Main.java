@@ -5,14 +5,174 @@ import searchers.AstarSearcher;
 import searchers.BFSearcher;
 import searchers.DFSearcher;
 import searchers.Searcher;
+import utilities.GSException;
 
-import java.util.Scanner;
-import java.util.Vector;
+import java.lang.reflect.Array;
+import java.util.*;
 
 public class Main {
 
+    public static Problem p1() {
+        return new Problem() {
+
+            @Override
+            public State initialState() {
+                return new State("Arad");
+            }
+
+            @Override
+            public Vector<Action> actions(State s) {
+                Vector<Action> res = new Vector<Action>();
+                switch (((String)s.getStatus()).toLowerCase()){
+                    case "arad" :
+                        res.add(new Action("Zerind",75.0));
+                        res.add(new Action("Timisora",118.0));
+                        res.add(new Action("Sibiu",140.0));
+                    break;
+
+                    case "zerind":
+                        res.add(new Action("Oradea",71.0));
+                        res.add(new Action("Arad",75.0));
+                        break;
+
+                    case "oradea":
+                        res.add(new Action("Sibiu",151.0));
+                        res.add(new Action("Zerind",71.0));
+                        break;
+
+                    case "sibiu":
+                        res.add(new Action("Fagaras",99.0));
+                        res.add(new Action("Rimnicu Vilcea",80.0));
+                        res.add(new Action("Oradea",151.0));
+                        res.add(new Action("Arad",140.0));
+                        break;
+
+                    case "timisoara":
+                        res.add(new Action("Arad",118.0));
+                        res.add(new Action("Lugoj",111.0));
+                        break;
+
+                    case "lugoj":
+                        res.add(new Action("Timisoara",111.0));
+                        res.add(new Action("Mehadia",70.0));
+                        break;
+
+                    case "mehadia":
+                        res.add(new Action("Lugoj",70.0));
+                        res.add(new Action("Dobreta",75.0));
+                        break;
+
+                    case "dobreta":
+                        res.add(new Action("Craiova",120.0));
+                        res.add(new Action("Mehadia",120.0));
+                        break;
+
+                    case "fagaras":
+                        res.add(new Action("Sibiu",99.0));
+                        res.add(new Action("Bucharest",211.0));
+                        break;
+
+                    case "rimnicu vilcea":
+                        res.add(new Action("Sibiu",80.0));
+                        res.add(new Action("Craiova",146.0));
+                        res.add(new Action("Pitesti",97.0));
+                        break;
+
+                    case "craiova":
+                        res.add(new Action("Pitesti",138.0));
+                        res.add(new Action("Dobreta",120.0));
+                        res.add(new Action("Rimnicu Vilcea",146.0));
+                        break;
+
+                    case "pitesti":
+                        res.add(new Action("Rimnicu vilcea",97.0));
+                        res.add(new Action("Craiova",138.0));
+                        res.add(new Action("Bucharest",101.0));
+                        break;
+
+                    case "bucharest":
+                        res.add(new Action("Giurgiu",90.0));
+                        res.add(new Action("Pitesti",101.0));
+                        res.add(new Action("Fagaras",211.0));
+                        res.add(new Action("Urziceni",85.0));
+                        break;
+
+                    case "giurgiu":
+                        res.add(new Action("Bucharest",90.0));
+                        break;
+
+                    case "urziceni":
+                        res.add(new Action("Bucharest",85.0));
+                        res.add(new Action("Vaslui",142.0));
+                        res.add(new Action("Hirsova",98.0));
+                        break;
+
+                    case "vaslui":
+                        res.add(new Action("Lasi",92.0));
+                        res.add(new Action("Urziceni",142.0));
+                        break;
+
+                    case "lasi":
+                        res.add(new Action("Neamt",87.0));
+                        res.add(new Action("Vaslui",92.0));
+                        break;
+
+                    case "neamt":
+                        res.add(new Action("Lasi",87.0));
+                        break;
+
+                    case "hirsova":
+                        res.add(new Action("Urziceni",98.0));
+                        res.add(new Action("Eforie",86.0));
+                        break;
+
+                    case "eforie":
+                        res.add(new Action("Hirsova",86.0));
+                        break;
+                }
+                return res;
+            }
+
+            @Override
+            public State result(State s, Action a) {
+                return new State(a.getAction());
+            }
+
+            @Override
+            public boolean goalTest(State n) {
+                return ((String)n.getStatus()).equalsIgnoreCase("Vaslui");
+            }
+
+            @Override
+            public double actionCost(State s, Action a) {
+                return a.getCost();
+            }
+
+            @Override
+            public double pathCost(Node n) {
+                Node p = n.getParent();
+                double cost = n.getPathCost();
+                while(p != null){
+                    cost += p.getPathCost();
+                    p = p.getParent();
+                }
+                return cost;
+            }
+        };
+    }
+
     public static void main(String[] args) {
-//        p1();
+        BFSearcher bfs = new BFSearcher(p1());
+        try {
+            Node res = bfs.search();
+            if (res == null)
+                System.out.println("OOPS!");
+            else{
+                System.out.println(Problem.solution(res));
+            }
+        } catch (GSException | InterruptedException e) {
+            e.printStackTrace();
+        }
 //        p3();
     }
 
