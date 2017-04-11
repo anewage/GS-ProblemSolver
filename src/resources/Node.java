@@ -87,7 +87,7 @@ public class Node {
 
     @Override
     public String toString() {
-        return "State:" + state + ", Step cost from parent: " + pathCost;
+        return "State:" + state + ", Path cost from parent down to this node: " + pathCost;
     }
 
     @Override

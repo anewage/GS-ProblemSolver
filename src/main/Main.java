@@ -274,6 +274,8 @@ public class Main {
 
 
         UCSearcher ucs = new UCSearcher(p1);
+        BDSearcher bds = new BDSearcher(p1);
+        bds.setGoalState(new State("Vaslui"));
 
 
         try {
@@ -292,8 +294,12 @@ public class Main {
             Node res4 = ucs.search();
             System.out.println("UCS:");
             System.out.println((res4 != null ? Problem.solution(res4)  : "NOT FOUND ") + ucs.toString() );
+
+            Node res5 = bds.search();
+            System.out.println("BDS:");
+            System.out.println((res5 != null ? Problem.solution(res5)  : "NOT FOUND ") + bds.toString() );
         } catch (GSException | InterruptedException e) {
-            e.printStackTrace();    
+            e.printStackTrace();
         }
     }
 
