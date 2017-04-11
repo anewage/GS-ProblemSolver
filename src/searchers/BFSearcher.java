@@ -48,9 +48,7 @@ public class BFSearcher extends Searcher {
                 boolean f2 = explored.contains(leaf);
                 if (!f1 || !f2)
                     ((Vector)frontier).add(child);
-
             }
-
         }
         return null;
     }
