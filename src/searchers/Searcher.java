@@ -26,12 +26,22 @@ public abstract class Searcher {
     protected Vector<Node> explored;
 
     /**
+     * Performance measurement values of the search algorithm.
+     */
+    public int visitedNodesCount;
+    public int expandedNodesCount;
+    public int maxNodeCountInMemory;
+
+    /**
      * Constructor method. the frontier must be set at the end of constructing this object.
      *
      * @param problem {@link Problem} to be searched.
      */
     public Searcher(Problem problem){
         this.problem = problem;
+        visitedNodesCount = 0;
+        expandedNodesCount = 0;
+        maxNodeCountInMemory = 0;
     }
 
     /**
@@ -41,6 +51,11 @@ public abstract class Searcher {
      * @throws GSException if the frontier is not initialized.
      */
     public abstract Node search() throws GSException, InterruptedException;
+
+    @Override
+    public String toString() {
+        return "#Visited Nodes: " + visitedNodesCount + ", #Expanded Nodes: " + expandedNodesCount + ", #Maximum Memory Cells Used: " + maxNodeCountInMemory;
+    }
 
     /**
      * Building the child node and the path from parent to it.

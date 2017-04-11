@@ -12,8 +12,8 @@ import java.util.*;
 
 public class Main {
 
-    public static Problem p1() {
-        return new Problem() {
+    public static void p1() {
+        Problem p1 = new Problem() {
 
             @Override
             public State initialState() {
@@ -26,7 +26,7 @@ public class Main {
                 switch (((String)s.getStatus()).toLowerCase()){
                     case "arad" :
                         res.add(new Action("Zerind",75.0));
-                        res.add(new Action("Timisora",118.0));
+                        res.add(new Action("Timisoara",118.0));
                         res.add(new Action("Sibiu",140.0));
                     break;
 
@@ -158,22 +158,150 @@ public class Main {
                 }
                 return cost;
             }
-        };
-    }
 
-    public static void main(String[] args) {
-        BFSearcher bfs = new BFSearcher(p1());
-        try {
-            Node res = bfs.search();
-            if (res == null)
-                System.out.println("OOPS!");
-            else{
-                System.out.println(Problem.solution(res));
+            @Override
+            public double heuristic(State s) {
+                int index = -1;
+                double [] cities = {
+                        710,
+                        634,
+                        576,
+                        677,
+                        408,
+                        636,
+                        720,
+                        669,
+                        561,
+                        507,
+                        330,
+                        447,
+                        388,
+                        324,
+                        267,
+                        283,
+                        387,
+                        0,
+                        66.6,
+                        133,
+                };
+                switch (((String)s.getStatus()).toLowerCase()){
+                    case "arad" :
+                        index = 0;
+                        break;
+
+                    case "zerind":
+                        index = 1;
+                        break;
+
+                    case "oradea":
+                        index = 2;
+                        break;
+
+                    case "sibiu":
+                        index = 4;
+                        break;
+
+                    case "timisoara":
+                        index = 3;
+                        break;
+
+                    case "lugoj":
+                        index = 5;
+                        break;
+
+                    case "mehadia":
+                        index = 6;
+                        break;
+
+                    case "dobreta":
+                        index = 7;
+                        break;
+
+                    case "fagaras":
+                        index = 10;
+                        break;
+
+                    case "rimnicu vilcea":
+                        index = 9;
+                        break;
+
+                    case "craiova":
+                        index = 8;
+                        break;
+
+                    case "pitesti":
+                        index = 11;
+                        break;
+
+                    case "bucharest":
+                        index = 13;
+                        break;
+
+                    case "giurgiu":
+                        index = 12;
+                        break;
+
+                    case "urziceni":
+                        index = 14;
+                        break;
+
+                    case "vaslui":
+                        index = 17;
+                        break;
+
+                    case "lasi":
+                        index = 18;
+                        break;
+
+                    case "neamt":
+                        index = 19;
+                        break;
+
+                    case "hirsova":
+                        index = 15;
+                        break;
+
+                    case "eforie":
+                        index = 16;
+                        break;
+
+                }
+                return cities[index];
             }
+        };
+        BFSearcher bfs = new BFSearcher(p1);
+        DFSearcher dfs = new DFSearcher(p1);
+        dfs.setDepthLimit(8);
+        AstarSearcher aStar = new AstarSearcher(p1);
+        try {
+            Node res1 = bfs.search();
+            System.out.println("BFS:");
+            System.out.println((res1 != null ? Problem.solution(res1)  : "") + bfs.toString() );
+
+            Node res2 = dfs.search();
+            System.out.println("DFS:");
+            System.out.println((res2 != null ? Problem.solution(res2)  : "") + dfs.toString() );
+
+            Node res3 = aStar.search();
+            System.out.println("A*:");
+            System.out.println((res3 != null ? Problem.solution(res3)  : "") + aStar.toString() );
         } catch (GSException | InterruptedException e) {
             e.printStackTrace();
         }
-//        p3();
+    }
+
+    public static void p2() {
+
+    }
+
+    public static void p3(){
+
+    }
+
+    public static void main(String[] args) {
+        p1();
+        p2();
+        p3();
     }
 
 //    public static void p3(){

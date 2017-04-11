@@ -30,8 +30,16 @@ public class BFSearcher extends Searcher {
 
         // Looping
         while (!((Vector)frontier).isEmpty()){
+
+            // Measuring
+            if (((Vector) frontier).size() + explored.size() > maxNodeCountInMemory)
+                maxNodeCountInMemory = ((Vector) frontier).size() + explored.size();
+
             Node leaf = (Node) ((Vector)frontier).firstElement();
             ((Vector) frontier).removeElementAt(0);
+
+            // Measuring
+            visitedNodesCount++;
 
             // Goal test
             if (problem.goalTest(leaf.getState()))
@@ -44,9 +52,11 @@ public class BFSearcher extends Searcher {
             Vector<Action> actions = problem.actions(leaf.getState());
             for (Action a : actions) {
                 Node child = childNode(leaf, a);
-                boolean f1 = ((Vector)frontier).contains(child);
-                boolean f2 = explored.contains(leaf);
-                if (!f1 || !f2)
+
+                // Measuring
+                expandedNodesCount++;
+
+                if (!((Vector)frontier).contains(child) || !(explored.contains(leaf)))
                     ((Vector)frontier).add(child);
             }
         }

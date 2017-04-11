@@ -7,8 +7,10 @@ import resources.Problem;
 
 import java.util.Comparator;
 import java.util.PriorityQueue;
+import java.util.Vector;
 
 public class AstarSearcher extends Searcher {
+
     /**
      * Constructor method. the frontier must be set at the end of constructing this object.
      *
@@ -16,72 +18,60 @@ public class AstarSearcher extends Searcher {
      */
     public AstarSearcher(Problem problem) {
         super(problem);
+        frontier = new PriorityQueue<>(Comparator.comparingDouble(this::fScore));
     }
 
     @Override
     public Node search() throws GSException, InterruptedException {
+        // Initializations
+        if (frontier == null)
+            throw new GSException("Frontier is null!");
+        ((PriorityQueue) frontier).add(rootNode());
+        explored = new Vector<>();
+
+        // Looping
+        while (!((PriorityQueue)frontier).isEmpty()){
+
+            // Measuring
+            if (((PriorityQueue) frontier).size() + explored.size() > maxNodeCountInMemory)
+                maxNodeCountInMemory = ((PriorityQueue) frontier).size() + explored.size();
+
+            Node leaf = (Node) ((PriorityQueue)frontier).remove();
+
+            // Measuring
+            visitedNodesCount++;
+
+            // Goal test
+            if (problem.goalTest(leaf.getState()))
+                return leaf;
+
+            // Leaf is not a goal. Then it must be expanded. Making sure not to visit this node again!
+            explored.add(leaf);
+
+            // Expanding the leaf node
+            Vector<Action> actions = problem.actions(leaf.getState());
+            for (Action a : actions) {
+                Node child = childNode(leaf, a);
+
+                // Measuring
+                expandedNodesCount++;
+
+                if (!((PriorityQueue)frontier).contains(child) || !(explored.contains(leaf)))
+                    ((PriorityQueue)frontier).add(child);
+            }
+        }
         return null;
     }
-//
-//    private PriorityQueue<Node> q;
-//
-//    public AstarSearcher(Problem problem) {
-//        super(problem);
-//        q = new PriorityQueue<>(Comparator.comparingInt(this::fScore));
-//    }
-//
-//    @Override
-//    public Node search() throws GSException, InterruptedException {
-//        if (startNode == null)
-//            throw new GSException("Initial State is null! Please set the initial state first!");
-//        if (q == null)
-//            q = new PriorityQueue<>(Comparator.comparingInt(this::fScore));
-////        if (verifyNode(startNode, null))
-////            return startNode;
-//        q.add(startNode);
-//        while (!q.isEmpty()){
-//            Node curr = q.remove();
-//            if (verifyNode(curr, null))
-//                return curr;
-//            for (Action a : problem.actions(curr)) {
-//                Node n = problem.result(curr, a);
-//                if (!n.isTraversed()){
-//                    buildPath(n, curr);
-//                    q.add(n);
-//                }
-//            }
-//        }
-//        return null;
-//    }
-//
-//    @Override
-//    protected boolean verifyNode(Node n, Node parent) {
-//        n.setTraversed(true);
-//        return problem.goalTest(n);
-//    }
-//
-//    private void buildPath(Node n, Node parent){
-//        int weight = 0;
-//        if (parent != null)
-//            weight = problem.getPathCost(parent.getIndex(), n.getIndex());
-//        n.setParent(parent, weight);
-//    }
-//
-//    private int fScore(Node n){
-//        int f = gScore(n) + hScore(n);
-//        n.setFScore(f);
-//        return f;
-//    }
-//
-//    private int gScore(Node n){
-//        int g = n.getPathCost();
-//        n.setGScore(g);
-//        return g;
-//    }
-//
-//    private int hScore(Node n){
-//        int h = problem.hCost(n);
-//        n.setHScore(h);
-//        return h;
-//    }
+
+    /**
+     * The old grin traditional f-cost of a state!
+     * Uses problem's heuristic function.
+     *
+     * @param n {@link Node} node which is in state s.
+     * @return the f-cost to evaluate.
+     */
+    private double fScore(Node n){
+        return n.getPathCost() + problem.heuristic(n.getState());
+    }
+
 }

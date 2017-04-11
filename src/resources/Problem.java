@@ -72,4 +72,12 @@ public abstract class Problem {
      * @return double path from root to leaf node n.
      */
     public abstract double pathCost(Node n);
+
+    /**
+     * Calculate the heuristic value for state s.
+     *
+     * @param s {@link State} the state to evaluate.
+     * @return int heuristic value.
+     */
+    public abstract double heuristic(State s);
 }

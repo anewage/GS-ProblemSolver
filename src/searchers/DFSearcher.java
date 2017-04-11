@@ -6,6 +6,8 @@ import resources.Problem;
 
 import utilities.GSException;
 
+import java.util.Vector;
+
 
 public class DFSearcher extends Searcher {
 
@@ -65,11 +67,13 @@ public class DFSearcher extends Searcher {
     public Node search() throws GSException, InterruptedException {
         if (iterating)
             for (depthLimit = 1; depthLimit <= iteratingMaxDepth ; depthLimit++){
+                explored = new Vector<>();
                 Node res = recursiveSearch(rootNode());
                 if (res != null)
                     return res;
             }
         else{
+            explored = new Vector<>();
             Node res = recursiveSearch(rootNode());
             if (res != null)
                 return res;
@@ -79,12 +83,24 @@ public class DFSearcher extends Searcher {
 
     private Node recursiveSearch(Node root){
         explored.add(root);
+
+        // Measuring
+        if (explored.size() > maxNodeCountInMemory)
+            maxNodeCountInMemory = explored.size();
+        visitedNodesCount++;
+
         if (depthLimit != 0 &&  root.getDepth() > depthLimit)
             return null;
         if (problem.goalTest(root.getState()))
             return root;
+
+        // Expanding the leaf node
         for (Action a : problem.actions(root.getState())){
             Node child = childNode(root, a);
+
+            // Measuring
+            expandedNodesCount++;
+
             if (!explored.contains(child)){
                 Node res = recursiveSearch(child);
                 if (res != null)
