@@ -114,6 +114,13 @@ public class BDSearcher extends Searcher {
         this.goalState = goalState;
     }
 
+    /**
+     * Build the path from the current common node both from the goal and initial side.
+     *
+     * @param node {@link Node} The middle node.
+     * @param frontierContainingNode {@link Vector} to trace the route from the common node.
+     * @return Node|null
+     */
     private Node buildPath(Node node, Vector frontierContainingNode){
         System.out.println("BUILDING PATH FROM " + node + " AND: " + frontierContainingNode );
         if (problem.goalTest(node.getState()))
@@ -134,55 +141,4 @@ public class BDSearcher extends Searcher {
         }
         return res;
     }
-//
-//    private Problem inverseProblem;
-//    private Node goal;
-//    private Vector<Node> fromGoal;
-//    private Vector<Node> fromRoot;
-//
-//    public BDSearcher(Problem problem) throws GSException, CloneNotSupportedException {
-//        super(problem);
-//        inverseProblem = problem.inverse();
-//        goal = inverseProblem.getInitialState();
-//        fromGoal = new Vector<>();
-//        fromRoot = new Vector<>();
-//    }
-//
-//    @Override
-//    public Node search() throws GSException, InterruptedException {
-//        if (startNode == null)
-//            throw new GSException("Initial State is null! Please set the initial state first!");
-//        if (goal == null)
-//            throw new GSException("Goal State is null! Please set the goal state of the problem first!");
-//        if (fromRoot == null)
-//            fromRoot = new Vector<>();
-//        if (fromGoal == null)
-//            fromGoal = new Vector<>();
-//        if (verifyNode(startNode, null))
-//            return startNode;
-//        while (!fromRoot.isEmpty() && !fromGoal.isEmpty()){
-//            Node currFromRoot = fromRoot.firstElement();
-//            if (fromGoal.contains(currFromRoot))
-//                return currFromRoot;
-//
-//            Node currFromGoal = fromGoal.firstElement();
-//            for (int i = 0; i < Math.max(problem.actions(currFromRoot).size(), inverseProblem.actions(currFromGoal).size()); i++) {
-//                Action actionFromRoot = problem.actions(currFromRoot).elementAt(i);
-//                Node childFromRoot = problem.result(currFromRoot, actionFromRoot);
-//                //TODO
-//            }
-//        }
-////        fromRoot.enqueue(startNode);
-////        fromGoal.enqueue(goal);
-//        return null;
-//    }
-//
-//    @Override
-//    protected boolean verifyNode(Node n, Node parent) {
-//        return false;
-//    }
-//
-//    private void buildPath(){
-//
-//    }
 }
