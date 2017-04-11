@@ -1,10 +1,7 @@
 package main;
 
 import resources.*;
-import searchers.AstarSearcher;
-import searchers.BFSearcher;
-import searchers.DFSearcher;
-import searchers.Searcher;
+import searchers.*;
 import utilities.GSException;
 
 import java.lang.reflect.Array;
@@ -274,6 +271,11 @@ public class Main {
         DFSearcher dfs = new DFSearcher(p1);
         dfs.setDepthLimit(8);
         AstarSearcher aStar = new AstarSearcher(p1);
+
+
+        UCSearcher ucs = new UCSearcher(p1);
+
+
         try {
             Node res1 = bfs.search();
             System.out.println("BFS:");
@@ -286,8 +288,12 @@ public class Main {
             Node res3 = aStar.search();
             System.out.println("A*:");
             System.out.println((res3 != null ? Problem.solution(res3)  : "NOT FOUND ") + aStar.toString() );
+
+            Node res4 = ucs.search();
+            System.out.println("UCS:");
+            System.out.println((res4 != null ? Problem.solution(res4)  : "NOT FOUND ") + ucs.toString() );
         } catch (GSException | InterruptedException e) {
-            e.printStackTrace();
+            e.printStackTrace();    
         }
     }
 

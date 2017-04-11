@@ -34,7 +34,7 @@ public class UCSearcher extends Searcher {
         explored = new Vector<>();
 
         // Looping
-        while (!((Vector)frontier).isEmpty()){
+        while (!((PriorityQueue)frontier).isEmpty()){
 
             // Measuring
             if (((PriorityQueue) frontier).size() + explored.size() > maxNodeCountInMemory)

@@ -7,7 +7,11 @@ import resources.Problem;
 
 import java.util.Vector;
 
+/**
+ * Bi-directional Searcher.
+ */
 public class BDSearcher extends Searcher {
+
     /**
      * Constructor method. the frontier must be set at the end of constructing this object.
      *
