@@ -7,8 +7,14 @@ import resources.Node;
 
 import java.util.Comparator;
 import java.util.PriorityQueue;
+import java.util.Vector;
+import java.util.function.Predicate;
 
+/**
+ * Uniform-Cost Searcher.
+ */
 public class UCSearcher extends Searcher {
+
     /**
      * Constructor method. the frontier must be set at the end of constructing this object.
      *
@@ -16,10 +22,54 @@ public class UCSearcher extends Searcher {
      */
     public UCSearcher(Problem problem) {
         super(problem);
+        frontier = new PriorityQueue<>(Comparator.comparingDouble(Node::getPathCost));
     }
 
     @Override
     public Node search() throws GSException, InterruptedException {
+        // Initializations
+        if (frontier == null)
+            throw new GSException("Frontier is null!");
+        ((PriorityQueue) frontier).add(rootNode());
+        explored = new Vector<>();
+
+        // Looping
+        while (!((Vector)frontier).isEmpty()){
+
+            // Measuring
+            if (((PriorityQueue) frontier).size() + explored.size() > maxNodeCountInMemory)
+                maxNodeCountInMemory = ((PriorityQueue) frontier).size() + explored.size();
+
+            Node leaf = (Node) ((PriorityQueue)frontier).remove();
+
+            // Measuring
+            visitedNodesCount++;
+
+            // Goal test
+            if (problem.goalTest(leaf.getState()))
+                return leaf;
+
+            // Leaf is not a goal. Then it must be expanded. Making sure not to visit this node again!
+            explored.add(leaf);
+
+            // Expanding the leaf node
+            Vector<Action> actions = problem.actions(leaf.getState());
+            for (Action a : actions) {
+                Node child = childNode(leaf, a);
+
+                // Measuring
+                expandedNodesCount++;
+
+                if (!((PriorityQueue)frontier).contains(child) || !(explored.contains(leaf)))
+                    ((PriorityQueue)frontier).add(child);
+                else if (((PriorityQueue)frontier).contains(child)){
+                    ((PriorityQueue) frontier).removeIf(o -> {
+                        Node n = (Node) o;
+                        return n.equals(child) && n.getPathCost() > child.getPathCost();
+                    });
+                }
+            }
+        }
         return null;
     }
 

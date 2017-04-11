@@ -8,6 +8,9 @@ import utilities.GSException;
 
 import java.util.Vector;
 
+/**
+ * Breadth-First Searcher
+ */
 public class BFSearcher extends Searcher {
 
     /**

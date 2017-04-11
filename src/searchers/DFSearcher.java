@@ -8,7 +8,9 @@ import utilities.GSException;
 
 import java.util.Vector;
 
-
+/**
+ * Depth-First Searcher
+ */
 public class DFSearcher extends Searcher {
 
     /**
