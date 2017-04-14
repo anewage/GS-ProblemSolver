@@ -27,11 +27,38 @@ public class State {
     @Override
     public boolean equals(Object obj) {
         State s = (State) obj;
-        return s.getStatus().equals(this.status);
+        try {
+            int [][] matrix1 = (int [][]) s.getStatus();
+            int [][] matrix2 = (int [][]) getStatus();
+            for (int i = 0; i < matrix1.length; i++)
+                for (int j = 0; j < matrix1.length; j++)
+                    if(matrix1[i][j] != matrix2[i][j])
+                        return false;
+            return true;
+        } catch (Exception e){
+            return s.getStatus().equals(this.status);
+        }
     }
 
     @Override
     public String toString() {
-        return status.toString();
+        try {
+            String res = "";
+            int [][] puzzle = (int [][]) getStatus();
+            for (int i = 0; i < puzzle.length; i++)
+                for (int j = 0; j < puzzle.length; j++)
+                    res += puzzle[i][j];
+            return res;
+        } catch (Exception e){
+            try{
+                String res = "";
+                int [] p = (int []) getStatus();
+                for (int i = 0; i < p.length; i++)
+                    res += p[i];
+                return res;
+            } catch (Exception e2){
+                return status.toString();
+            }
+        }
     }
 }

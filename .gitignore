@@ -30,9 +30,8 @@ gen### Java template
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 
-document.aux
-document.log
-document.out
-document.synctex.gz
-document.toc
-!/document.tex
+# Document files
+/docs/document.toc
+/docs/document.out
+/docs/document.aux
+/docs/document.synctex.gz

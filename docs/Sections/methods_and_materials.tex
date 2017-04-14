@@ -1,0 +1,183 @@
+	\section{نحوه پیاده‌سازی، روش‌ها و الگوریتم‌ها}
+	فریم‌ورک پیاده‌سازی شده توسط نگارنده به زبان Java بوده و
+	\lr{GS-ProblemSolver}
+	نام دارد که از چهار بسته\footnote{Package} به شرح زیر تشکیل شده است:
+	\begin{itemize}
+		\item
+		بسته 
+		\texttt{resources}:
+		در این بسته، کلاس‌هایی که به طور مستقیم با پیمایش گراف و ساخته شدن راه‌حل در ارتباط هستند قرار دارند.
+		\item
+		بسته 
+		\texttt{searchers}:
+		هر جستجوگر که با الگوریتمی منحصر به فرد شروع به جستجو در فضای حالت مسئله می‌کند، در این بسته قرار داده شده است. این بسته حاوی کلاسی تحت عنوان
+		\texttt{Searcher}
+		است که به صورت ابسترکت\footnote{Abstract} پیاده‌سازی شده است. برای ثابت نگه داشتن واسط میان جستجوگرها و فضای حالت مسئله و همچنین واسط برنامه‌نویسی کاربری\footnote{API} کلاس‌های جستجوکننده، تمامی جستجوگرها می‌بایست از کلاس
+		\texttt{Searcher}
+		به ارث برده شوند\footnote{Inherit}.
+		\item
+		بسته
+		\texttt{utilities}:
+		شامل کلاس‌های کمکی در کار با فریم‌ورک است. در زمان ویراستاری این گزارش، در این بسته تنها کلاس
+		\texttt{GSException}
+		موجود است. این بسته بیشتر برای استفاده در آینده و افزودن کلاس‌های کمکی بیشتر به کار برده می‌شود. به عنوان مثال می‌توان در آینده کلاسی تحت عنوان تحلیل‌گر عملکرد جستجوگرها ساخت و در این بسته قرار داد.
+		\item
+		بسته 
+		\texttt{main}:
+		که حاوی برنامه اصلی و شروع‌کننده است.
+	\end{itemize}
+	توضیحات کلاس‌های موجود در هر بسته و نحوه پیاده‌سازی آن‌ها در ادامه ذکر می‌شود. شایان ذکر است تمامی توضیحات به صورت کامنت در کد منبع این پروژه نیز قرار دارند و توضیحات ذیل برای شفاف‌سازی بیشتر است.
+	\subsection{کلاس‌های اصلی و منبع}
+	همانطور که گفته شد، این کلاس‌ها به‌طور مستقیم با پیمایش فضای حالت مسئله و ساخته‌شدن راه‌حل ارتباط دارند. همگی این کلاس‌ها در بسته
+	\texttt{resources}
+	قرار گرفته‌اند و احتمال دارد که با ورود به فصل‌های بعدی کتاب و گسترش یافتن انواع مسئله‌ها و پیچیده‌تر شدن ساختار راه‌حل و نحوه جستجو، ساختار بعضی از کلاس‌ها تغییر یابد.
+	\subsubsection{کلاس مسئله}
+	این کلاس در فایل
+	\texttt{Problem.java}
+	 به صورت ابسترکت پیاده‌سازی شده و تنها دارای یک متد غیرابسترکت است. توابع این کلاس عبارتند از:
+	\paragraph{تابع حالت اولیه}
+	که در واقع تولیدکننده حالت ابتدایی و آغازین مسئله است. این تابع همچنین به ساختار حالت‌های مسئله قالب نیز می‌دهد و نوع‌داده آن‌ها را مشخص می‌کند.
+	\begin{latin}
+		\begin{lstlisting}[language=Java]
+/**
+* Getting the problem's initial state in which we start the search.
+*
+* @return State the initial state.
+*/
+public abstract State initialState();
+\end{lstlisting}
+	\end{latin}
+	\paragraph{تابع تست هدف}
+	این تابع برای بررسی اینکه آیا حالت داده شده هدف است یا نه مورد استفاده قرار می‌گیرد.
+		\begin{latin}
+		\begin{lstlisting}[language=Java]
+/**
+* Determine whether the given state is the goal of the problem or not.
+*
+* @param n State to review.
+* @return boolean the answer.
+*/
+public abstract boolean goalTest(State n);
+\end{lstlisting}
+	\end{latin}
+	\paragraph{تابع عمل‌های ممکن در هر حالت}
+	عملیات ممکن در هر حالت توسط این تابع معلوم شده و برگردانده می‌شود. در این‌جا تمامی اعمال در نتیجه ظاهر نمی‌شوند و فقط اعمالی که قابلیت اجرا در حالت ورودی را دارند در نتیجه برگردانده می‌شوند.
+		\begin{latin}
+	\begin{lstlisting}[language=Java]
+/**
+* The actions list which can be performed while the agent is in state s.
+*
+* @param s State to review.
+* @return Vector set of actions available in state s.
+*/
+public abstract Vector<Action> actions(State s);
+\end{lstlisting}
+	\end{latin}
+
+	\paragraph{تابع معلوم‌کننده نتیجه هر عمل در یک حالت}
+	به‌ازای عمل ورودی و قابل انجام در حالت ورودی، حالت نتیجه شدهدر صورت انجام آن عمل در حالت ورودی برگردانده می‌شود.
+	\begin{latin}
+		\begin{lstlisting}[language=Java]
+/**
+* Returns the result node of an action performed on agent when it was in state s.
+*
+* @param s State the state in which the agent is.
+* @param a Action the action to perform.
+* @return State with parent n.
+*/
+public abstract State result(State s, Action a);
+\end{lstlisting}
+	\end{latin}
+	
+	\paragraph{تابع هزینه عمل}
+	هزینه انجام یک عمل در حالت ورودی را برمی‌گرداند. فرض براین است که عمل ورودی در حالت ذکر شده قابل انجام است.
+	\begin{latin}
+		\begin{lstlisting}[language=Java]
+/**
+* Returns the cost of action a in state s.
+*
+* @param s State in which the action will be performed.
+* @param a Action to be performed
+* @return double cost of the action.
+*/
+public abstract double actionCost(State s, Action a);
+\end{lstlisting}
+	\end{latin}
+
+	\paragraph{تابع هزینه مسیر}
+	هزینه مسیری که از حالت اولیه تا گره فعلی (دربردارنده حالت فعلی) طی شده را برمی‌گرداند.
+		\begin{latin}
+		\begin{lstlisting}[language=Java]
+/**
+* Returns the path in leaded to node n.
+* @param n Node the leaf node.
+* @return double path from root to leaf node n.
+*/
+public abstract double pathCost(Node n);
+\end{lstlisting}
+	\end{latin}
+
+	\paragraph{تابع شهودی}
+	فقط باید در صورتی پیاده‌سازی شود که از جستجوگرهای آگاهانه می‌خواهیم استفاده کنیم و در واقع این تابع مقدار
+	\texttt{gScroe}
+	را برای هر حالت تخمین می‌زند.
+	\begin{latin}
+		\begin{lstlisting}[language=Java]
+/**
+* Calculate the heuristic value for state s.
+*
+* @param s {@link State} the state to evaluate.
+* @return int heuristic value.
+*/
+public abstract double heuristic(State s);
+\end{lstlisting}
+	\end{latin}
+
+	\paragraph{تابع بازگرداننده راه‌حل}
+	این تابع به صورت غیر ابسترکت پیاده‌سازی شده و به ازای هر ورودی که از جنس یک گره می‌باشد، حالت‌هایی که در هنگام جستجوی راه‌حل به‌دست آمده بودند را برمی‌گرداند. این تابع صرفا یک تابع کمکی است که به دست آوردن راه‌حل یک لایه تجرید بیشتر داشته باشد و آسان‌تر باشد. از ذکر جزئیات پیاده‌سازی این تابع پرهیز می‌شود؛ در صورت داشتن ابهام به کد منبع پروژه رجوع شود.
+	
+	\subsubsection{کلاس گره}
+	این کلاس در فایل
+	\texttt{Node.java}
+	پیاده‌سازی شده و وظیفه نگهداری اطلاعات مربوط به مسیری که تا حالت کنونی طی شده است را دارد. شرط مساوی بودن یک گره با گره دیگر نیز مساوی بودن حالت‌های این دو گره است. در برخی جستجوها علاوه بر خصوصیات ذکر شده در قسمت‌های قبل، نیازمند دانستن عمق گره کنونی در گراف نیز هستیم که این خصوصیت از بررسی تعداد گره‌های موجود در مسیر منتهی به این گره به آسانی قابل حصول است و در داخل این کلاس نیز به عنوان یک تابع پیاده‌سازی شده است.
+	\subsubsection{کلاس حالت}
+	که در فایل
+	\texttt{State.java}
+	پیاده‌سازی شده است، دارای یک آبجکت\footnote{Object} به نام وضعیت\footnote{Status} و فقط به خاطر ساختارمند کردن هرچه بیشتر به عنوان یک کلاس پیاده‌سازی شده است. خصیصه وضعیت همان حالت مورد نظر است که به صورت اتمیک است.
+	\subsubsection{کلاس عمل}
+	این کلاس نیز در فایل
+	\texttt{Action.java}
+	پیاده‌سازی شده و تنها دارای دو خصیصه
+	\texttt{data}
+	و
+	\texttt{cost}
+	می‌باشد که اولی توضیحات و داده‌های مربوط به عمل است و دومی هزینه انجام عمل می‌باشد. همانند کلاس حالت، این کلاس نیز صرفا برای ساختارمند کردن بیشتر پروژه، پیاده‌سازی شده است.
+	\subsection{جستجوگرها}
+	این کلاس‌ها در بسته
+	\texttt{searchers}
+	قرار داشته و وظیفه یافتن راه‌حل برای مسئله پاس داده شده به آن‌ها در هنگام ساخته شدن را دارند. 
+	\subsubsection{جستجوگر ابسترکت}
+	همانطور که ذکر شد، تمامی جستجوگرها می‌بایست از کلاس ابسترکتی به نام
+	\lr{Searcher}
+	به ارث برده شوند. این کلاس در فایل 
+	\texttt{Searcher.java}
+	قرار گرفته است و دلیل اهمیت آن نیز دارا بودن اینترفیس و واسط بسیار ساده و همچنین خصیصه‌هایی که مورد نیاز تمامی جستجوگرهاست، می‌باشد. این کلاس دارای یک متد ابسترکت است که وظیفه آن جستجوی راه‌حل در مسئله داده شده است. هر جستجوگر می‌بایست جداگانه و با توجه به الگوریتم مورد نظر خود، این متد را پیاده‌سازی کند.
+	\begin{latin}
+		\begin{lstlisting}[language=Java]
+/**
+* The actuator function and main responsibility of this class.
+*
+* @return Null if no solution found | {@link Node} containing a solution.
+* @throws GSException if the frontier is not initialized.
+*/
+public abstract Node search() throws GSException, InterruptedException;
+\end{lstlisting}
+	\end{latin}
+	برای ایجاد هر نمونه جستجوگر می‌بایست مسئله را در تابع سازنده‌ به جستجوگر پاس دهیم و سپس متد
+	\texttt{search()}
+	 را فراخوانی کنیم.\\
+	 به علاوه، این کلاس دارای متغیرهای دیگری نیز هست که برای شمارش تعداد گره‌های مشاهده شده، تعدا گره‌های بسط‌داده شده و حداکثر حافظه مورد استفاده در طول جستجو به کار برده می‌شوند.
+
+
+	
+	

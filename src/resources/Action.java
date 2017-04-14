@@ -38,4 +38,9 @@ public class Action {
     public void setAction(Object data) {
         this.data = data;
     }
+
+    @Override
+    public String toString() {
+        return data.toString();
+    }
 }
