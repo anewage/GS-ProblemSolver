@@ -13,6 +13,9 @@ import java.util.Vector;
  */
 public class SASearcher extends Searcher {
 
+    /**
+     * Temperature and time mapping
+     */
     private double [] tempMapping;
 
     /**

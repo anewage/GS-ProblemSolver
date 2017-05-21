@@ -3,6 +3,7 @@ package searchers;
 import resources.Action;
 import resources.Problem;
 import resources.Node;
+import resources.State;
 import utilities.GSException;
 
 import java.util.PriorityQueue;
@@ -71,5 +72,9 @@ public abstract class Searcher {
 
     protected Node rootNode(){
         return new Node(null, problem.initialState(), null,0);
+    }
+
+    protected Node randomNode(){
+        return new Node(null, problem.initialState(), null, 0);
     }
 }
