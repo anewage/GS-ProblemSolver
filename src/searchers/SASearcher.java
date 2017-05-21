@@ -51,9 +51,16 @@ public class SASearcher extends Searcher {
             double deltaE = problem.objectiveFunction(next.getState()) - problem.objectiveFunction(current.getState());
             double p = Math.exp(deltaE/tmp);
 
+            // Measuring
+            visitedNodesCount++;
+
             // Stepping forward!
-            if (deltaE > 0 || rnd.nextDouble() < p)
+            if (deltaE > 0 || rnd.nextDouble() < p){
                 current = next;
+
+                // Measuring
+                expandedNodesCount++;
+            }
         }
         return null;
     }
