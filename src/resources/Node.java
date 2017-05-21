@@ -8,6 +8,11 @@ public class Node {
     private Node parent;
 
     /**
+     * Used only in genetic algorithms.
+     */
+    private Node secondParent;
+
+    /**
      * The state in which the agent is while traversing this node.
      */
     private State state;
@@ -94,5 +99,13 @@ public class Node {
     public boolean equals(Object obj) {
         Node dst = (Node) obj;
         return dst.getState().equals(this.state);
+    }
+
+    public Node getSecondParent() {
+        return secondParent;
+    }
+
+    public void setSecondParent(Node secondParent) {
+        this.secondParent = secondParent;
     }
 }
