@@ -265,6 +265,11 @@ public class Main {
                 }
                 return cities[index];
             }
+
+            @Override
+            public double objectiveFunction(State s) {
+                return 0;
+            }
         };
         BFSearcher bfs = new BFSearcher(p1);
         DFSearcher dfs = new DFSearcher(p1);
@@ -406,6 +411,11 @@ public class Main {
                             h++;
                 return h;
             }
+
+            @Override
+            public double objectiveFunction(State s) {
+                return 0;
+            }
         };
         DFSearcher dfs = new DFSearcher(p2);
         BDSearcher bds = new BDSearcher(p2);
@@ -499,6 +509,11 @@ public class Main {
 
             @Override
             public double heuristic(State s) {
+                return 0;
+            }
+
+            @Override
+            public double objectiveFunction(State s) {
                 return 0;
             }
         };
