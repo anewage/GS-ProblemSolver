@@ -49,9 +49,15 @@ public class HCSearcher extends Searcher {
         // Looping
         while (objective1 > objective2 || objective1 == objective2){
             Node neighbor = getUphillMove(current);
+
+            // Measuring
+            visitedNodesCount++;
+
+
             objective1 = problem.objectiveFunction(neighbor.getState());
             objective2 = problem.objectiveFunction(current.getState());
             if (objective1 < objective2 ){
+                expandedNodesCount++;
                 if (randomRestartHillClimbing && !problem.goalTest(current.getState()))
                     // Restarting from random state
                     current = randomNode();
