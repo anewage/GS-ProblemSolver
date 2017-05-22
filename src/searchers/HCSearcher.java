@@ -53,8 +53,8 @@ public class HCSearcher extends Searcher {
             visitedNodesCount++;
 
 
-            objective1 = problem.objectiveFunction(neighbor.getState());
-            objective2 = problem.objectiveFunction(current.getState());
+            objective1 = problem.heuristic(neighbor.getState());
+            objective2 = problem.heuristic(current.getState());
             if (objective1 < objective2 ){
                 expandedNodesCount++;
                 if (randomRestartHillClimbing && !problem.goalTest(current.getState()))
@@ -93,15 +93,15 @@ public class HCSearcher extends Searcher {
     }
 
     private Node getUphillMove(Node current){
-        PriorityQueue<Node> prioritizedNeighbors = new PriorityQueue<>((o1, o2) -> (int) (problem.objectiveFunction(o1.getState()) - problem.objectiveFunction(o2.getState())));
+        PriorityQueue<Node> prioritizedNeighbors = new PriorityQueue<>((o1, o2) -> (int) (problem.heuristic(o1.getState()) - problem.heuristic(o2.getState())));
         Vector<Node> upwardMoves = new Vector<>();
         for (Action a : problem.actions(current.getState())) {
             Node next = childNode(current, a);
             if (firstChoiceHillClimbing){
-                if (problem.objectiveFunction(next.getState()) > problem.objectiveFunction(current.getState()))
+                if (problem.heuristic(next.getState()) > problem.heuristic(current.getState()))
                     return next;
             } else if (stochasticHillClimbing) {
-                if (problem.objectiveFunction(next.getState()) > problem.objectiveFunction(current.getState()))
+                if (problem.heuristic(next.getState()) > problem.heuristic(current.getState()))
                     upwardMoves.add(next);
             } else {
                 prioritizedNeighbors.add(next);

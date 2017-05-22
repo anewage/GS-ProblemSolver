@@ -95,7 +95,7 @@ public class GASearcher extends Searcher{
             population = nextGeneration;
         }
 
-        PriorityQueue<Node> q = new PriorityQueue<>((o1, o2) -> (int) (problem.objectiveFunction(o1.getState()) - problem.objectiveFunction(o2.getState())));
+        PriorityQueue<Node> q = new PriorityQueue<>((o1, o2) -> (int) (problem.heuristic(o1.getState()) - problem.heuristic(o2.getState())));
         q.addAll(population);
         return q.remove();
     }

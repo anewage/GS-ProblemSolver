@@ -14,9 +14,13 @@ import java.util.Vector;
 public class SASearcher extends Searcher {
 
     /**
-     * Temperature and time mapping
+     * Maximum temperature which is decreased by one in each iteration
      */
-    private double [] tempMapping;
+    private int maxTemp;
+
+    private double decreaseRatio;
+
+    private int maxTime;
 
     /**
      * Constructor method. the frontier must be set at the end of constructing this object.
@@ -27,8 +31,16 @@ public class SASearcher extends Searcher {
         super(problem);
     }
 
-    public void setTempMapping(double[] tempMapping) {
-        this.tempMapping = tempMapping;
+    public void setMaxTemp(int maxTemp) {
+        this.maxTemp = maxTemp;
+    }
+
+    public void setDecreaseRatio(double decreaseRatio) {
+        this.decreaseRatio = decreaseRatio;
+    }
+
+    public void setMaxTime(int maxTime) {
+        this.maxTime = maxTime;
     }
 
     @Override
@@ -38,9 +50,10 @@ public class SASearcher extends Searcher {
         Node current = rootNode();
 
         // Looping through time
-        for (int t = 0; t < tempMapping.length; t++) {
+        for (int t = 0; t < maxTime; t++) {
             // The temperature or simply the "T"
-            double tmp = tempMapping[t];
+            double tmp = tempMapping(t);
+            System.out.println("time: " + t + "temp: " + tmp);
 
             // Cooling process is over now!
             if (tmp == 0)
@@ -48,23 +61,33 @@ public class SASearcher extends Searcher {
 
             // Getting a randomly selected successor of current node
             Vector actions = problem.actions(current.getState());
-            Node next = childNode(current, (Action) actions.elementAt(rnd.nextInt(actions.size())));
+            int actionIndex = rnd.nextInt(actions.size());
+            Node next = childNode(current, (Action) actions.elementAt(actionIndex));
 
             // Calculating Delta E and the probability to accept the generated node.
-            double deltaE = problem.objectiveFunction(next.getState()) - problem.objectiveFunction(current.getState());
+            double deltaE = problem.heuristic(next.getState()) - problem.heuristic(current.getState());
             double p = Math.exp(deltaE/tmp);
 
             // Measuring
             visitedNodesCount++;
 
             // Stepping forward!
-            if (deltaE > 0 || rnd.nextDouble() < p){
+            if (deltaE > 0.0){
+                System.out.println("Moving from: " + current.getState() + ", To: " + next.getState() + ". deltaE:" + deltaE + ", p:" + p + ", time: " + t +  ", temp:" + tmp );
                 current = next;
 
                 // Measuring
                 expandedNodesCount++;
             }
+            else if(rnd.nextDouble() < p) {
+                current = next;
+                expandedNodesCount++;
+            }
         }
         return null;
+    }
+
+    private double tempMapping(int time){
+        return maxTemp - (time * decreaseRatio);
     }
 }

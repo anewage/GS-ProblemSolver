@@ -1,5 +1,6 @@
 package main;
 
+import com.sun.javafx.collections.NonIterableChange;
 import resources.*;
 import searchers.*;
 import utilities.GSException;
@@ -8,7 +9,10 @@ import java.util.*;
 
 public class Main {
 
-    public static void p1() {
+    /**
+     * Graph Search p1
+     */
+    public static void p1(){
         Problem p1 = new Problem() {
 
             @Override
@@ -265,11 +269,6 @@ public class Main {
                 }
                 return cities[index];
             }
-
-            @Override
-            public double objectiveFunction(State s) {
-                return 0;
-            }
         };
         BFSearcher bfs = new BFSearcher(p1);
         DFSearcher dfs = new DFSearcher(p1);
@@ -293,7 +292,10 @@ public class Main {
         }
     }
 
-    public static void p2() {
+    /**
+     * Graph Search p2
+     */
+    public static void p2(){
         Problem p2 = new Problem() {
             @Override
             public State initialState() {
@@ -411,11 +413,6 @@ public class Main {
                             h++;
                 return h;
             }
-
-            @Override
-            public double objectiveFunction(State s) {
-                return 0;
-            }
         };
         DFSearcher dfs = new DFSearcher(p2);
         BDSearcher bds = new BDSearcher(p2);
@@ -444,6 +441,9 @@ public class Main {
         }
     }
 
+    /**
+     * Graph Search p3
+     */
     public static void p3(){
         Problem p3 = new Problem() {
             @Override
@@ -511,11 +511,6 @@ public class Main {
             public double heuristic(State s) {
                 return 0;
             }
-
-            @Override
-            public double objectiveFunction(State s) {
-                return 0;
-            }
         };
         BFSearcher bfs = new BFSearcher(p3);
         DFSearcher dfs = new DFSearcher(p3);
@@ -535,9 +530,107 @@ public class Main {
 
     }
 
+    public static void localSearchP1(){
+        System.out.println("Please enter the matrix:");
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        double [][] matrix = new double[n][n];
+        for (int i = 0; i < n; i++)
+            for (int j = 0; j < n; j++)
+                matrix[i][j] = sc.nextDouble();
+        Problem p1 = new Problem() {
+
+            private boolean checkRandom(int num, Vector<Integer> array){
+                for (int i : array) {
+                    if (i == num)
+                        return false;
+                }
+                return true;
+            }
+
+            @Override
+            public State initialState() {
+                // Returning a random permutation of city indexes.
+                // Each index corresponds to a city.
+                Vector<Integer> indexes = new Vector<>();
+                Random rnd = new Random();
+                for (double[] ignored : matrix){
+                    int randomIndex = rnd.nextInt(matrix.length);
+                    while (!checkRandom(randomIndex, indexes))
+                        randomIndex = rnd.nextInt(matrix.length);
+                    indexes.add(randomIndex);
+                }
+                return new State(indexes);
+            }
+
+            @Override
+            public Vector<Action> actions(State s) {
+                Vector status = (Vector) s.getStatus();
+                Vector<Action> actions = new Vector<>();
+                for (int i = 0; i < status.size(); i++)
+                    for (int j = i+1; j < status.size(); j++)
+                        actions.add(new Action(new int[]{i, j}, 1));
+                // Returning the possible permutations.
+                return actions;
+            }
+
+            @Override
+            public State result(State s, Action a) {
+                int[] action = (int[]) a.getAction();
+                Vector indexes = (Vector) s.getStatus();
+                Vector newIndexes = new Vector();
+                for (int i = 0; i < indexes.size(); i++)
+                    newIndexes.add(indexes.elementAt(i));
+                int op1 = (int) indexes.elementAt(action[0]);
+                int op2 = (int) indexes.elementAt(action[1]);
+                newIndexes.removeElementAt(action[0]);
+                newIndexes.insertElementAt(op2, action[0]);
+                newIndexes.removeElementAt(action[1]);
+                newIndexes.insertElementAt(op1, action[1]);
+                return new State(newIndexes);
+            }
+
+            @Override
+            public boolean goalTest(State n) {
+                return false;
+            }
+
+            @Override
+            public double actionCost(State s, Action a) {
+                return 1;
+            }
+
+            @Override
+            public double pathCost(Node n) {
+                return solution(n).size();
+            }
+
+            @Override
+            public double heuristic(State s) {
+                Vector status = ((Vector<Integer>) s.getStatus());
+                double cost = 0;
+                for (int i = 1; i < status.size(); i++)
+                    cost -= matrix[(int) status.elementAt(i-1)][(int) status.elementAt(i)];
+                return cost;
+            }
+        };
+        SASearcher sa = new SASearcher(p1);
+        sa.setMaxTime(2000000);
+        sa.setMaxTemp(200000);
+        sa.setDecreaseRatio(0.1);
+        try {
+            Node res = sa.search();
+            System.out.println("SA:");
+            System.out.println((res != null ? Problem.solution(res) + " Path Cost: " +  res.getPathCost() + " " : "NOT FOUND ") + sa.toString() );
+        } catch (GSException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) {
-        p1();
-        p2();
-        p3();
+//        p1();
+//        p2();
+//        p3();
+        localSearchP1();
     }
 }

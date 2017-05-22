@@ -80,6 +80,4 @@ public abstract class Problem {
      * @return int heuristic value.
      */
     public abstract double heuristic(State s);
-
-    public abstract double objectiveFunction(State s);
 }
